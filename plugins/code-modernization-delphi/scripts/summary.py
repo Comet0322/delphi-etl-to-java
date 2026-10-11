@@ -25,6 +25,13 @@ NOT_PROVEN = [
 ]
 
 
+def check_cell(check):
+    """A check line, or per-task checks ({"T0": "PASS", ...}) as "T0 PASS, T1 PASS"."""
+    if isinstance(check, dict):
+        return ", ".join("%s %s" % kv for kv in check.items())
+    return str(check)
+
+
 def summary(p):
     a = p["analysis"]
     status = sc.load_json(p["status"])
@@ -44,7 +51,7 @@ def summary(p):
     for stage, t in (status.get("timing") or {}).items():
         for r in (t if isinstance(t, list) else [t]):
             out.append("| %s | %s | %s | %s |" % (stage, r.get("start", ""), r.get("end", ""),
-                                                  (status.get("checks") or {}).get(stage, "")))
+                                                  check_cell((status.get("checks") or {}).get(stage, ""))))
     out += ["", "## Blocked", ""]
     out += ["- %s: tried %s; needs %s" % (e, "; ".join(b.get("tried") or []) or "—", b.get("needs") or "—")
             for e, b in sorted((status.get("blocked") or {}).items())] or ["None."]
