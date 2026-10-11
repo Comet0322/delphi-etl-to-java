@@ -1,0 +1,233 @@
+etl_id: ETL-003
+name: CitySummary
+legacy_files:
+- legacy/src_utf8/uCitySum.pas
+- legacy/src_utf8/LegacyEtl.pas
+depends_on:
+- ETL-001
+- ETL-002
+operations:
+- op_id: ETL-003/OP-01
+  type: read
+  source_loc: legacy/src_utf8/uCitySum.pas:35-41
+  inputs:
+  - T_CUST_CLEAN.CUST_ID
+  - T_CUST_CLEAN.CITY
+  rule: Load customer -> city map from ETL-001 output
+  outputs:
+  - city map
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-003/OP-02
+  type: read
+  source_loc: legacy/src_utf8/uCitySum.pas:46-48
+  inputs:
+  - T_ORDER_AMT.CUST_ID
+  - T_ORDER_AMT.AMOUNT
+  rule: Read ETL-002 output
+  outputs:
+  - order amounts
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-003/OP-03
+  type: lookup
+  source_loc: legacy/src_utf8/uCitySum.pas:50-51
+  inputs:
+  - city map
+  - T_ORDER_AMT.CUST_ID
+  rule: city = map[CUST_ID]; empty/missing city (unknown customer or customer without city) becomes '(UNKNOWN)'
+  outputs:
+  - city per order
+  implicit:
+    null_handling:
+      applies: true
+      note: empty city and missing customer both map to '(UNKNOWN)'
+      loc: uCitySum.pas:51
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-003/OP-04
+  type: aggregate
+  source_loc: legacy/src_utf8/uCitySum.pas:44-45,52-61
+  inputs:
+  - city per order
+  - T_ORDER_AMT.AMOUNT
+  rule: 'Per city: count orders and sum AMOUNT parsed with StrToCurr into a Currency accumulator'
+  outputs:
+  - city accumulators
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: true
+      note: amounts are parsed as Currency, sum stays 4 decimals
+      loc: uCitySum.pas:61
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: true
+      note: TStringList Sorted with default (case-insensitive, locale) compare; key identity is the string itself
+      loc: uCitySum.pas:44-45,52
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-003/OP-05
+  type: write
+  source_loc: legacy/src_utf8/uCitySum.pas:66-78
+  inputs:
+  - city accumulators
+  rule: Drop and recreate T_CITY_SUM; write CITY, ORDER_CNT, TOTAL as fixed 2 decimals via CurrToStrF
+  outputs:
+  - T_CITY_SUM
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: true
+      note: TOTAL formatted with 2 decimals
+      loc: uCitySum.pas:74
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''

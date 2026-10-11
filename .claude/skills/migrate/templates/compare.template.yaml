@@ -1,0 +1,20 @@
+# compare.yaml -- tolerances live ONLY here and are frozen with the charter.
+# Default is strict equality. Relax a column only when the user or the domain
+# knowledge says so; the agent never loosens it to make diffs disappear.
+source:
+  adapter: sqlite            # sqlite | csv  (see scripts/compare.py ADAPTERS)
+  path: ""
+defaults:
+  null_equals_empty: false
+  strip: none                # none | right | both
+  abs_tol: 0
+datasets:
+  - name: EXAMPLE
+    etl: ETL-001
+    baseline: EXAMPLE        # table or file holding the legacy result
+    candidate: EXAMPLE_NEW   # table or file holding the migrated result
+    key: [ID]
+    ignore: []
+    columns:
+      # AMOUNT: {type: decimal, abs_tol: 0}
+      # NAME:   {type: string, strip: right}

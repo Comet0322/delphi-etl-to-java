@@ -1,0 +1,10 @@
+target/
+*.db
+results/
+*.o
+*.ppu
+__pycache__/
+.charter.lock
+testbed/case1-pascal/legacy/build/
+testbed/case1-pascal/legacy/data/
+testbed/**/target/

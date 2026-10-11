@@ -1,0 +1,319 @@
+etl_id: ETL-002
+name: OrderAmount
+legacy_files:
+- legacy/src_utf8/uOrders.pas
+- legacy/src_utf8/LegacyEtl.pas
+depends_on: []
+operations:
+- op_id: ETL-002/OP-01
+  type: read
+  source_loc: legacy/src_utf8/uOrders.pas:37
+  inputs:
+  - ORDERS.*
+  rule: Read orders ordered by ORDER_ID
+  outputs:
+  - order rows
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: true
+      note: output order follows ORDER_ID
+      loc: uOrders.pas:37
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-002/OP-02
+  type: filter
+  source_loc: legacy/src_utf8/uOrders.pas:42-47
+  inputs:
+  - ORDERS.QTY
+  - GSkipVoid
+  rule: Skip orders with QTY = 0 when the global GSkipVoid is True; GSkipVoid is set to True in TMainForm.FormCreate (form event, not in the ETL
+    unit)
+  outputs:
+  - order rows
+  implicit:
+    null_handling:
+      applies: true
+      note: NULL QTY reads as 0 and is skipped
+      loc: uOrders.pas:42
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: true
+      note: GSkipVoid assigned in FormCreate
+      loc: LegacyEtl.pas:24; uCommon.pas:GSkipVoid
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-002/OP-03
+  type: transform
+  source_loc: legacy/src_utf8/uOrders.pas:48-51
+  inputs:
+  - ORDERS.QTY
+  - ORDERS.UNIT_PRICE
+  - ORDERS.DISCOUNT_PCT
+  rule: Amt = QTY*PRICE; Amt = Amt - Amt*DISC/100, all in Currency (4 decimals, fixed point); PRICE read through AsCurrency from a REAL column
+  outputs:
+  - Amt
+  implicit:
+    null_handling:
+      applies: true
+      note: NULL price/discount read as 0
+      loc: uOrders.pas:48-49
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: true
+      note: Currency keeps 4 decimals after each operation
+      loc: uOrders.pas:48-51
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-002/OP-04
+  type: transform
+  source_loc: legacy/src_utf8/uOrders.pas:12-26,55
+  inputs:
+  - Amt
+  rule: 'AMOUNT text = Round(Amt*100) cents (Delphi Round: half to even) formatted as d.dd; negative handled with sign'
+  outputs:
+  - T_ORDER_AMT.AMOUNT
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: true
+      note: Round() is banker's rounding on cents
+      loc: uOrders.pas:55
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-002/OP-05
+  type: transform
+  source_loc: legacy/src_utf8/uOrders.pas:52
+  inputs:
+  - ORDERS.DISCOUNT_PCT
+  rule: STATUS = 'S' when DISCOUNT_PCT > 10 else 'N'
+  outputs:
+  - T_ORDER_AMT.STATUS
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-002/OP-06
+  type: transform
+  source_loc: legacy/src_utf8/uOrders.pas:56
+  inputs:
+  - ORDERS.NOTE
+  rule: NOTE copied; NULL becomes ''
+  outputs:
+  - T_ORDER_AMT.NOTE
+  implicit:
+    null_handling:
+      applies: true
+      note: 'AsString: NULL becomes '''''
+      loc: uOrders.pas:56
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-002/OP-07
+  type: write
+  source_loc: legacy/src_utf8/uOrders.pas:35-36,53-58
+  inputs:
+  - transformed rows
+  rule: Drop and recreate T_ORDER_AMT, insert ORDER_ID, CUST_ID, AMOUNT, NOTE, STATUS
+  outputs:
+  - T_ORDER_AMT
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''

@@ -1,0 +1,320 @@
+etl_id: ETL-001
+name: CustomerClean
+legacy_files:
+- legacy/src_utf8/uCustomer.pas
+- legacy/src_utf8/LegacyEtl.pas
+depends_on: []
+operations:
+- op_id: ETL-001/OP-01
+  type: read
+  source_loc: legacy/src_utf8/uCustomer.pas:18-40
+  inputs:
+  - cust_notes.txt
+  rule: Read notes file line by line; skip lines shorter than 5 bytes; id = trimmed bytes 1-4 (StrToIntDef, 0 on bad); note = bytes 5-24, Big5/CP950
+    decoded to UTF-8, right-trimmed; later line with same id overwrites earlier
+  outputs:
+  - notes map id->note
+  implicit:
+    null_handling:
+      applies: true
+      note: unparsable id becomes 0, not an error
+      loc: uCustomer.pas:31
+    trim:
+      applies: true
+      note: Trim on id field, TrimRight on decoded note
+      loc: uCustomer.pas:31,35
+    codepage:
+      applies: true
+      note: note bytes are Big5 (CP950) via SetCodePage 950 then UTF-8
+      loc: uCustomer.pas:33-34
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-001/OP-02
+  type: read
+  source_loc: legacy/src_utf8/uCustomer.pas:55
+  inputs:
+  - CUSTOMER.CUST_ID
+  - CUSTOMER.NAME
+  - CUSTOMER.CITY
+  - CUSTOMER.JOIN_DATE
+  rule: Read all customers ordered by CUST_ID
+  outputs:
+  - customer rows
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: true
+      note: output order follows CUST_ID
+      loc: uCustomer.pas:55
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-001/OP-03
+  type: transform
+  source_loc: legacy/src_utf8/uCustomer.pas:61
+  inputs:
+  - CUSTOMER.NAME
+  rule: NAME = Trim(NAME) (both sides; CHAR padding and leading spaces removed)
+  outputs:
+  - T_CUST_CLEAN.NAME
+  implicit:
+    null_handling:
+      applies: true
+      note: 'AsString: NULL becomes '''''
+      loc: uCustomer.pas:61
+    trim:
+      applies: true
+      note: 'Trim removes chars <= #32 on both sides'
+      loc: uCustomer.pas:61
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-001/OP-04
+  type: transform
+  source_loc: legacy/src_utf8/uCustomer.pas:62
+  inputs:
+  - CUSTOMER.CITY
+  rule: CITY = UpperCase(Trim(CITY)); UpperCase only converts ASCII letters
+  outputs:
+  - T_CUST_CLEAN.CITY
+  implicit:
+    null_handling:
+      applies: true
+      note: 'AsString: NULL becomes '''''
+      loc: uCustomer.pas:62
+    trim:
+      applies: true
+      note: Trim both sides before upper-casing
+      loc: uCustomer.pas:62
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-001/OP-05
+  type: transform
+  source_loc: legacy/src_utf8/uCustomer.pas:63-67
+  inputs:
+  - CUSTOMER.JOIN_DATE
+  rule: JOIN_DATE is a TDateTime number; 0 (or NULL, which AsFloat reads as 0) becomes ''; otherwise FormatDateTime('yyyymmdd')
+  outputs:
+  - T_CUST_CLEAN.JOIN_DATE
+  implicit:
+    null_handling:
+      applies: true
+      note: NULL date collapses to 0 through AsFloat
+      loc: uCustomer.pas:63
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: true
+      note: 0 means no date, written as empty string (not NULL)
+      loc: uCustomer.pas:64-65
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-001/OP-06
+  type: lookup
+  source_loc: legacy/src_utf8/uCustomer.pas:72
+  inputs:
+  - notes map
+  - CUSTOMER.CUST_ID
+  rule: NOTE = notes[CUST_ID]; missing id gives ''
+  outputs:
+  - T_CUST_CLEAN.NOTE
+  implicit:
+    null_handling:
+      applies: true
+      note: missing note is '' (TStringList.Values)
+      loc: uCustomer.pas:72
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''
+- op_id: ETL-001/OP-07
+  type: write
+  source_loc: legacy/src_utf8/uCustomer.pas:53-54,68-73
+  inputs:
+  - transformed rows
+  rule: Drop and recreate T_CUST_CLEAN, insert one row per customer
+  outputs:
+  - T_CUST_CLEAN
+  implicit:
+    null_handling:
+      applies: false
+      note: ''
+      loc: ''
+    trim:
+      applies: false
+      note: ''
+      loc: ''
+    codepage:
+      applies: false
+      note: ''
+      loc: ''
+    rounding:
+      applies: false
+      note: ''
+      loc: ''
+    empty_date_sentinel:
+      applies: false
+      note: ''
+      loc: ''
+    ordering_dependency:
+      applies: false
+      note: ''
+      loc: ''
+    global_or_event_effect:
+      applies: false
+      note: ''
+      loc: ''
+    swallowed_exception:
+      applies: false
+      note: ''
+      loc: ''
+  confidence: inferred
+  target_loc: ''
+  evidence: ''

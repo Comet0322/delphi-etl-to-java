@@ -1,0 +1,29 @@
+mode: unattended
+stage: implement
+charter: draft
+assumed_count: 1
+etls:
+  ETL-001:
+    stage: analyzed
+    runs: 0
+    last_diff_count: null
+    blocked:
+      code: ''
+      tried: []
+      needs: ''
+  ETL-002:
+    stage: analyzed
+    runs: 0
+    last_diff_count: null
+    blocked:
+      code: ''
+      tried: []
+      needs: ''
+  ETL-003:
+    stage: analyzed
+    runs: 0
+    last_diff_count: null
+    blocked:
+      code: ''
+      tried: []
+      needs: ''
