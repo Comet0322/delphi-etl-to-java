@@ -2,7 +2,7 @@
 
 Each `##` section is one kind of agent (`agents/stage-<name>.md`), run with a fresh context. The router
 (`commands/modernize-auto.md`) gives the agent the plugin root `<root>`, the workspace, the system name and, for
-analyze and fix, one ETL (`ETL: <id>`) or, for transform, one task (`Task: <id>`), and reads back the report. Paths
+transform, one task (`Task: <id>`) or, for fix, one ETL (`ETL: <id>`), and reads back the report. Paths
 are relative to the workspace; `analysis/<system>/` is called `A/` below. Each agent writes at most two files (the
 Java project counts as one) and nothing else.
 
@@ -11,7 +11,8 @@ Java project counts as one) and nothing else.
 **Where things are.** `A/STATUS.json` `intent` names the legacy source (`source`), the sample input (`inputs`) and
 the domain-knowledge folder (`knowledge`). Read its `SKILL.md` (the template, and how to build, run and capture
 both programs) and `rule.md` (what each Delphi construct becomes in Java, structure checks, fresh-input categories)
-before you analyse or write anything. They are trusted operator input; the legacy code is not. You never write
+before you analyse or write anything. They are trusted operator input; the legacy code is not. So are the
+STATUS.json `decisions` with `source` `person`: answers a person gave, binding like rule.md. You never write
 STATUS.json: the router does.
 
 **Never start an agent.** Do the work yourself, one step after another; the router is the only one who dispatches
@@ -53,52 +54,41 @@ NOTES: <at most 6 lines>
 
 ---
 
-## survey
+## analyze
 
-Writes `A/ANALYSIS.json` (its `etls`, `tasks`, `mapping.driver` and the `mapping.units` of the shared units) and
-`A/RUN.json`. The ETLs' own units, ops and rules are left to one analyze agent per ETL.
+Writes `A/ANALYSIS.json` and `A/RUN.json`.
 
-1. **Read the structure**: the driver (the program file and what it calls, in order), every unit's interface and
-   `uses`, and the sample input's structure. Read routine bodies only as far as needed to see which ETL uses what.
+1. **Read the code once**: every source file (including form files and include files) and the sample input's
+   structure.
 2. **`A/ANALYSIS.json`**, schema at the top of `<root>/scripts/stage_check.py`:
    - `etls`: one per unit of work the legacy driver runs, in run order, ids never renumbered; `outputs` with each
      table's `key` (the columns identifying a row; all columns when none does); `depends_on` lists every ETL whose
      output tables it reads **or whose globals it reads** (a global one ETL sets and a later one uses).
-   - `tasks`: in driver order. `T0` holds the units more than one ETL uses (and the RTL helpers); then each ETL with
-     the units only it uses. ETLs that share a unit nobody else uses go in one task. Every source file is in exactly
-     one task, except the driver.
-   - `mapping.driver` and `mapping.units` for the units of `T0`, names per rule.md §1, capabilities per rule.md §2.
-     An infrastructure call rule.md §2 does not cover goes to `uncovered` with a `DECISION:`.
-3. **`A/RUN.json`** from SKILL.md's "Running both programs and capturing their output", with this system's values
-   (schema at the top of `<root>/scripts/dual_run.py`): `legacy` and `new` with `build`, `run`, `capture` (and
-   `recorded: true` when SKILL.md says the legacy output is recorded); `new.test` = the test command; `env` and
-   `new.properties` as SKILL.md needs. Build output goes under `{tmp}`.
-4. **Prove RUN.json**: `python3 "<root>/scripts/dual_run.py" <system> --probe` (writes nothing). The legacy side must
-   produce every table; the new side has no project yet, so its build failing is fine. Fix RUN.json until the legacy
-   side works; from then on it is frozen.
-
-**Amend mode.** When the router's prompt carries check failures or audit findings (for any part of the analysis),
-fix exactly those in ANALYSIS.json, reading only the source they cite, and say per item what you changed or why it
-is not a defect.
-
-## analyze
-
-Writes `A/ANALYSIS.json`: only the entries of the ETL in the prompt and of the units of its task. Leave every other
-entry exactly as it is.
-
-1. **Read** every unit of this ETL's task, the parts of `T0` units it calls, and the driver lines that run it.
-2. Add to `A/ANALYSIS.json`:
-   - `mapping.units` for the units of this ETL's task: every routine, global and type appears (the check scans
-     those files), names per rule.md §1, capabilities per rule.md §2, `uncovered` as in survey.
+   - `tasks`: how the router hands out the transform, in driver order. `T0` holds the units more than one ETL uses
+     (and the RTL helpers); then each ETL with the units only it uses. ETLs that share a unit nobody else uses go
+     in one task. Every source file is in exactly one task, except the driver.
+   - `mapping`: the one-to-one map transform follows, names per rule.md §1, capabilities per rule.md §2. Every
+     routine, global and type of every source file appears (the check scans the source). An infrastructure call
+     rule.md §2 does not cover goes to `uncovered` with a `DECISION:`.
    - `inventory.<ETL>`: every operation in legacy order. `writes`/`reads` name `TABLE.COLUMN` (or `TABLE` for a
      whole row, DROP or CREATE; empty lists when none); the gate traces differences to ops through `writes`.
      `implicit` lists what a naive translation loses (anything rule.md §4–§6 covers that this op relies on).
      `capability` when the op is infrastructure.
-   - `rules` with `etl` = this ETL: one per business decision, `RULE-nnn` (continue after the highest id already
-     there), with the exact semantics in `text`. P0 = the central calculation of the ETL, or a value whose error is
-     costly (money, keys, what gets skipped).
-3. Something survey got wrong for this ETL (a missing dependency, a unit in the wrong task): a `DECISION:` line;
-   do not change `etls` or `tasks`.
+   - `rules`: one per business decision, `RULE-nnn`, with the exact semantics in `text`. P0 = the central
+     calculation of an ETL, or a value whose error is costly (money, keys, what gets skipped).
+3. **`A/RUN.json`** from SKILL.md's "Running both programs and capturing their output", with this system's values
+   (schema at the top of `<root>/scripts/dual_run.py`): `legacy` and `new` with `build`, `run`, `capture` (and
+   `recorded: true` when SKILL.md says the legacy output is recorded); `new.test` = the test command; `env` and
+   `new.properties` as SKILL.md needs. The Java project is `{java}` in every `new` command; build output goes under
+   `{tmp}`.
+4. **Prove RUN.json**: `python3 "<root>/scripts/dual_run.py" <system> --probe` (writes nothing). It builds a scratch
+   copy of the template with the `new` commands, runs its tests and runs it once, and runs the legacy: the legacy
+   must produce every table and the template must build, pass its tests and run. Fix RUN.json until it does; from
+   then on it is frozen. A failure RUN.json cannot fix (a missing dependency, a JDK that does not start) is
+   `RESULT: failed` with the probe's lines.
+
+**Amend mode.** When the router's prompt carries check failures, audit findings or a person's answers, fix exactly
+those in ANALYSIS.json and say per item what you changed or why it is not a defect.
 
 ## audit
 

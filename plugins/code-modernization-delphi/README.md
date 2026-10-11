@@ -26,16 +26,17 @@ should not load.
 |---|---|
 | `commands/modernize-auto.md` — the router | `SKILL.md` — the template, and how to build, run and capture the output of both programs |
 | `AUTO_STAGES.md` — what each stage does, artifact formats, rules every stage follows | `rule.md` — mapping rules (structure, capabilities, tables, types, RTL, field access), structure checks, fresh-input categories |
-| `agents/stage-*.md` — survey, analyze, audit, transform, verify, fix | `template-project/` — the Java project every migration starts from |
+| `agents/stage-*.md` — analyze, audit, transform, verify, fix | `template-project/` — the Java project every migration starts from |
 | `scripts/` — one per moment of the run (below) | `collect_sqlite.py` — the testbed's capture command (SQLite tables to CSV) |
 
 ## Flow and files
 
 Every agent is dispatched by the router, one at a time; no agent starts another (subagents cannot nest in Claude
-Code 2.0.x). Analysis is split per ETL, transform per task in legacy driver order, fix per ETL.
+Code 2.0.x). One agent analyses the whole program and lists the transform tasks in legacy driver order; the router
+hands out transform one task per agent and fix one ETL per agent.
 
 ```
-router ─ setup ─ survey ─ analyze ETL-001 … ETL-n ─ audit ─(amend once)─ transform T0 … Tn ─┐
+router ─ setup ─ analyze ─ audit ─(amend once)─ [questions, with --ask] ─ transform T0 … Tn ─┐
          (stage_check after every agent)                                                    │
         ┌─ verify ─ loop_gate ─ DONE/BLOCKED ─ summary                                      │
         └── fix ETL-a … ETL-b ◄─ CONTINUE (TRACE lines; WAIT for an ETL whose upstream differs) ◄┘
@@ -45,6 +46,10 @@ The router commits `analysis/<system>` and `modernized/<system>` after every age
 repository when it is not in one), so `git log` lists every step with its check result and `git show <id>` shows
 what one agent changed; SUMMARY.md lists the commits.
 
+With `--ask` the router stops after the audit and asks what the rules do not cover (the assumed decisions and the
+uncovered infrastructure calls); a `claude -p` run writes the questions into STATUS.json and stops until a person
+fills in the answers. Without it the run assumes and lists every assumption in SUMMARY.md.
+
 After transform task Tn the Java runs the legacy driver up to the last ETL of Tn, and the dual run compares only
 those ETLs' tables (the rest are `pending`), so each task is proven before the next one starts.
 
@@ -52,9 +57,8 @@ Every agent writes at most two files under `analysis/<system>/` (`A/`):
 
 | Agent | Writes |
 |---|---|
-| router (`setup.py`, its own bookkeeping) | `A/STATUS.json` — intent, stage, analyzed ETLs, current task, tasks done, timing, checks, decisions, proposals, blocked, gate; a person's `approved` |
-| survey | `A/ANALYSIS.json` (ETLs, tasks, driver and shared-unit mapping), `A/RUN.json` (how each side is built, run, captured) |
-| analyze (one per ETL) | `A/ANALYSIS.json` (that ETL's unit mapping, inventory, rules) |
+| router (`setup.py`, its own bookkeeping) | `A/STATUS.json` — intent (mode `unattended`, or `ask` with `--ask`), stage, questions, current task, tasks done, timing, checks, decisions, proposals, blocked, gate; a person's `approved` |
+| analyze | `A/ANALYSIS.json` (ETLs, tasks, mapping, inventory, rules), `A/RUN.json` (how each side is built, run, captured) |
 | audit | `A/AUDIT.json` |
 | transform (one per task) | the Java project `modernized/<system>/java/`, `A/RESULTS.json` (by `dual_run.py`) |
 | verify | `A/fresh_inputs.py`, `A/RESULTS.json` (by `dual_run.py`) |
@@ -65,9 +69,9 @@ Every agent writes at most two files under `analysis/<system>/` (`A/`):
 
 | Script | Who runs it, when | Does |
 |---|---|---|
-| `setup.py` | router, before survey | writes STATUS.json (paths, date, hash of the legacy source, limits) |
-| `stage_check.py` | router, after every survey, analyze, transform and verify agent | checks coverage and structure (`--etl`, `--task` narrow it to one ETL or the tasks so far): task order, Pascal scanner against the mapping, one-to-one names, op comments, rule.md structure checks, fresh-input categories |
-| `dual_run.py` | agents, in survey (`--probe`), transform, verify and fix | runs both sides on the sample and the fresh cases as RUN.json says, runs the tests, compares each output table in canonical CSV form, writes RESULTS.json |
+| `setup.py` | router, before analyze | writes STATUS.json (paths, date, hash of the legacy source, limits) |
+| `stage_check.py` | router, after every analyze, transform and verify agent | checks coverage and structure (`--task` narrows it to the tasks so far): task order, Pascal scanner against the mapping, one-to-one names, op comments, rule.md structure checks, fresh-input categories |
+| `dual_run.py` | agents, in analyze (`--probe`: builds, tests and runs a scratch copy of the template, runs the legacy), transform, verify and fix | runs both sides on the sample and the fresh cases as RUN.json says, runs the tests, compares each output table in canonical CSV form, writes RESULTS.json |
 | `loop_gate.py` | router, in the loop after verify and after each fix round | per-ETL stop conditions (CONTINUE, WAIT, EQUIVALENT, BLOCKED), the proof verdict (PROVEN / PARTLY PROVEN / NOT PROVEN), a trace of each difference to op, legacy lines and Java lines |
 | `summary.py` | router, at closeout | writes SUMMARY.md from STATUS.json and AUDIT.json |
 

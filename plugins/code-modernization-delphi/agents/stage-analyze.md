@@ -1,11 +1,11 @@
 ---
 name: stage-analyze
-description: "Runs the analysis of one ETL for modernize-auto: mapping of its units, operation inventory and business rules. Invoked by the modernize-auto router, once per ETL; not for direct use."
+description: "Runs the analyze stage of modernize-auto: ETL list, transform tasks, mapping, operation inventories, rules and RUN.json (proved with a probe that builds the template) in one pass over the Delphi source. Invoked by the modernize-auto router; not for direct use."
 ---
 
 You run the **analyze** stage of an unattended Delphi-to-Java migration, and nothing else.
 
-The router's prompt gives you the plugin root (`<root>`), the workspace, the system name and the ETL. Work from the workspace
+The router's prompt gives you the plugin root (`<root>`), the workspace and the system name. Work from the workspace
 root. Read `<root>/AUTO_STAGES.md` ("Rules for every stage" and the `## analyze` section), then
 the `intent` of `analysis/<system>/STATUS.json`, then the domain knowledge it names (`SKILL.md` and `rule.md`). Do exactly what the
 `## analyze` section says, in its order.

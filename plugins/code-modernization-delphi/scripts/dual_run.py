@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Agents, in survey (--probe), transform, verify and fix: run both programs on every case and compare.
+"""Agents, in analyze (--probe), transform, verify and fix: run both programs on every case and compare.
 
     python3 dual_run.py <system> [--workspace DIR] [--probe] [--rerun-legacy]
 
@@ -22,7 +22,8 @@ run and captured, the way the domain knowledge describes; this script knows noth
 Per side and case the input folder is copied to {work} (made writable), `properties` is written, `run` runs, then
 `capture` must leave {out}/<TABLE>.csv (a run that writes those files itself needs no capture). Placeholders:
 {work}, {out}, {input} the original case folder (read only), {tmp} a scratch folder of this invocation (build
-output), {ws} the workspace, {knowledge} the domain-knowledge folder, {id} the case id. Commands run from the
+output), {java} the Java project (modernized/<system>/java), {ws} the workspace, {knowledge} the domain-knowledge
+folder, {id} the case id. Commands run from the
 workspace through the shell. `recorded: true`: the legacy cannot run here, `capture` copies its recorded output;
 fresh cases then have no legacy side.
 
@@ -41,8 +42,10 @@ RESULTS.json is written by this script only (a person's approval of a difference
      "cases": {"C01": {"input_sha": "...", "legacy": {"T": "csv"}, "new": {"T": "csv"}, "errors": {"new": "..."},
                        "tables": {"T": {"verdict": "same|differs|missing|no-legacy|pending", "diff": ["key 2: AMT legacy=2.25 new=2.26"]}}}}}
 
---probe runs C01 on both sides, prints the rows per table and side and writes nothing (exit 1 when the legacy
-misses a table or the new side fails to build or run). Otherwise prints one line per table that is not the same.
+--probe proves RUN.json before any Java is written, and writes nothing: it copies the domain knowledge's
+template-project/ to a scratch folder as {java}, builds it, runs `new.test` and runs it on C01 (it produces no
+tables yet), and runs the legacy on C01. It prints the rows per table and side; exit 1 when the legacy misses a
+table or the template fails to build, test or run. Otherwise prints one line per table that is not the same.
 Exit 0 when every compared table is the same, 1 otherwise, 2 for unusable input.
 """
 import argparse
@@ -219,9 +222,9 @@ def subst(text, ctx):
 
 
 class Runner:
-    def __init__(self, ws, run, tables, knowledge, tmp):
+    def __init__(self, ws, run, tables, knowledge, tmp, java):
         self.ws, self.run, self.tables, self.tmp = ws, run, tables, tmp
-        self.base = {"ws": ws, "tmp": tmp, "knowledge": knowledge}
+        self.base = {"ws": ws, "tmp": tmp, "knowledge": knowledge, "java": java}
         self.null = (run.get("csv") or {}).get("null", NULL)
 
     def env(self, ctx):
@@ -315,13 +318,26 @@ def main(argv=None):
         sample = intent.get("inputs", "")
         if not os.path.isdir(sample):
             raise InputError("STATUS.json intent.inputs %r is not a folder" % sample)
-        r = Runner(ws, run, tables, intent.get("knowledge", ""), tmp)
+        knowledge = intent.get("knowledge", "")
+        java = os.path.join(ws, "modernized", a.system, "java")
+        if a.probe:
+            template = os.path.join(knowledge, "template-project")
+            if not os.path.isdir(template):
+                raise InputError("%s is missing" % template)
+            java = os.path.join(tmp, "java")
+            shutil.copytree(template, java)
+        r = Runner(ws, run, tables, knowledge, tmp, java)
         recorded = bool(run["legacy"].get("recorded"))
 
         if a.probe:
             bad = []
             for side in SIDES:
                 err = r.build(side) if not (side == "legacy" and recorded) else None
+                if side == "new" and not err and run["new"].get("test"):
+                    rc, tail = r.sh(run["new"]["test"], r.base)
+                    print("new tests: exit %d" % rc)
+                    if rc:
+                        err = "tests failed (exit %d):\n%s" % (rc, tail)
                 got, err = (None, err) if err else r.side(side, "C01", sample)
                 for t in tables:
                     text = (got or {}).get(t["name"])

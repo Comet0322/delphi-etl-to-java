@@ -176,14 +176,23 @@ class Run(unittest.TestCase):
         self.assertIsNone(res["tests"]["exit"])
         self.assertIn("build failed", res["cases"]["C01"]["errors"]["new"])
 
-    def test_probe_writes_nothing(self):
-        self.run_json(self.db_side("T_OUT"), {"run": "true"})
+    def test_probe_builds_the_template_and_writes_nothing(self):
+        os.makedirs(os.path.join(self.ws, "template-project"))
+        self.write(os.path.join(self.ws, "template-project", "pom.xml"), "<project/>")
+        new = {"build": "test -f {java}/pom.xml", "test": "true", "run": "test -d {java}"}
+        self.run_json(self.db_side("T_OUT"), new)
         r = self.go("--probe")
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("legacy T_OUT: 3 rows", r.stdout)
+        self.assertIn("new tests: exit 0", r.stdout)
         self.assertIn("new T_OUT: missing", r.stdout)
         self.assertFalse(os.path.exists(os.path.join(self.a, "RESULTS.json")))
-        self.run_json({"run": "true"}, {"run": "true"})
+        self.assertFalse(os.path.exists(os.path.join(self.ws, "modernized")))
+        self.run_json(self.db_side("T_OUT"), dict(new, test="exit 1"))
+        r = self.go("--probe")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("new tests failed (exit 1)", r.stdout)
+        self.run_json({"run": "true"}, new)
         self.assertEqual(self.go("--probe").returncode, 1)
 
     def test_quoted_field_with_newline_survives(self):

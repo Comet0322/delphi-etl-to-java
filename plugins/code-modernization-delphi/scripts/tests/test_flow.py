@@ -181,11 +181,7 @@ class ScanUnit(Fixture):
         self.assertEqual([n for n, _ in p["types"]], ["TForm1"])
 
 
-class Survey(Fixture):
-    def test_pass(self):
-        rc, out = self.check("survey")
-        self.assertEqual(rc, 0, out)
-
+class Tasks(Fixture):
     def test_bad_tasks(self):
         self.analysis["etls"].append({"id": "ETL-002", "outputs": [{"name": "T_SUM"}], "depends_on": ["ETL-003"]})
         self.analysis["etls"].append({"id": "ETL-003", "outputs": [{"name": "T_X"}], "depends_on": []})
@@ -193,7 +189,7 @@ class Survey(Fixture):
                                   {"id": "T1", "units": ["uCommon"], "etls": ["ETL-001", "ETL-002"]},
                                   {"id": "T2", "units": [], "etls": ["ETL-003", "ETL-001"]}]
         self.save()
-        rc, out = self.check("survey")
+        rc, out = self.check("analyze")
         self.assertEqual(rc, 1)
         for text in ("unit uCommon is in T0 and T1", "ETL-002 (T1) depends on ETL-003, which no earlier task builds",
                      "ETL-001 is in T1 and T2", "uOrders.pas is in no task's units and is not the driver"):
@@ -228,18 +224,6 @@ class Analyze(Fixture):
         for text in ("the file has", "needs a reads list", "writes T_IN.X, not an output table", "no P0 rule",
                      "is not RULE-nnn", "cites nope.pas"):
             self.assertIn(text, out)
-
-
-    def test_one_etl_only_checks_its_task(self):
-        self.analysis["etls"].append({"id": "ETL-002", "outputs": [{"name": "T_SUM"}], "depends_on": []})
-        self.analysis["tasks"].append({"id": "T2", "units": [], "etls": ["ETL-002"]})
-        self.save()
-        rc, out = self.check("analyze", "--etl", "ETL-001")
-        self.assertEqual(rc, 0, out)
-        rc, out = self.check("analyze", "--etl", "ETL-002")
-        self.assertIn("ETL-002 has no ops", out)
-        self.assertIn("no P0 rule for ETL-002", out)
-        self.assertNotIn("ETL-001", out)
 
 
 class Transform(Fixture):

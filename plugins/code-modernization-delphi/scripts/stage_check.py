@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Router, after each survey, analyze, transform and verify agent: check its output deterministically.
+"""Router, after each analyze, transform and verify agent: check its output deterministically.
 
-    python3 stage_check.py <system> survey [--workspace DIR]
-    python3 stage_check.py <system> analyze [--etl ETL-002] [--workspace DIR]
+    python3 stage_check.py <system> analyze [--workspace DIR]
     python3 stage_check.py <system> transform [--task T2] [--workspace DIR]
     python3 stage_check.py <system> verify [--workspace DIR]
 
@@ -10,10 +9,10 @@ It prints one line per failed check (`FAIL <check>: <detail>`) and a last line `
 exit 0 on pass, 1 on failure, 2 for unusable input. It checks coverage and structure, never behavior (dual_run.py
 and loop_gate.py do that). Project rules come from the domain knowledge's rule.md, nothing project-specific is written here.
 
-survey     ANALYSIS.json and RUN.json parse; RUN.json has a way to run or capture each side; every ETL has outputs
+analyze    ANALYSIS.json and RUN.json parse; RUN.json has a way to run or capture each side; every ETL has outputs
            with names; `tasks` puts every ETL in exactly one task, after the tasks of every ETL it depends on, and
-           every Pascal file in exactly one task's units unless it is a driver file (named in mapping.driver.legacy).
-analyze    (--etl: only that ETL, and the files of its task) every routine, unit-level global and type the Pascal source declares
+           every Pascal file in exactly one task's units unless it is a driver file (named in mapping.driver.legacy);
+           every routine, unit-level global and type the Pascal source declares
            is named in mapping; every ETL has outputs with names; every inventory op has op_id, does, a source_loc
            pointing at real lines, writes/reads lists naming only output tables for writes; there is a P0 rule
            whose source points at real lines.
@@ -24,7 +23,7 @@ verify     fresh_inputs.py exists; RESULTS.json has at least 10 fresh cases; its
            edge category below and every row of rule.md "Fresh-input categories" with fresh cases that exist, or
            give a reason one does not apply.
 
-ANALYSIS.json (written by the survey agent and one analyze agent per ETL; values are examples):
+ANALYSIS.json (written by the analyze agent; values are examples):
 
     {"etls": [{"id": "ETL-001", "name": "...", "entry": "uCustomer.RunCustomerClean", "files": ["uCustomer.pas"],
                "outputs": [{"name": "T_CUST_CLEAN", "key": ["CUST_ID"]}], "depends_on": []}],
@@ -278,23 +277,17 @@ def driver_files(analysis):
     return {unit_of(str(x).split(":")[0].strip()) for x in legacy}
 
 
-def task_scope(analysis, upto=None, etl=None):
-    """-> (set of unit names, set of ETL ids) for the tasks up to `upto`, or for the task holding `etl`; None: all."""
-    tasks = analysis.get("tasks") or []
-    if upto is None and etl is None:
+def task_scope(analysis, upto=None):
+    """-> (set of unit names, set of ETL ids) built by the tasks up to `upto`; (None, None): all."""
+    if upto is None:
         return None, None
+    tasks = analysis.get("tasks") or []
     ids = [t.get("id") for t in tasks]
-    if upto is not None:
-        if upto not in ids:
-            raise InputError("task %s is not in ANALYSIS.json tasks" % upto)
-        chosen = tasks[:ids.index(upto) + 1]
-    else:
-        chosen = [t for t in tasks if etl in (t.get("etls") or [])]
-        if not chosen:
-            raise InputError("%s is in no task" % etl)
+    if upto not in ids:
+        raise InputError("task %s is not in ANALYSIS.json tasks" % upto)
+    chosen = tasks[:ids.index(upto) + 1]
     units = {str(u).lower() for t in chosen for u in t.get("units") or []} | driver_files(analysis)
-    etls = {e for t in chosen for e in t.get("etls") or []} if upto is not None else {etl}
-    return units, etls
+    return units, {e for t in chosen for e in t.get("etls") or []}
 
 
 def check_run_and_etls(analysis, run, fails):
@@ -314,10 +307,7 @@ def check_run_and_etls(analysis, run, fails):
     return etls, outs
 
 
-def check_survey(p, fails, scope=None):
-    a = p["analysis"]
-    analysis = load_json(os.path.join(a, "ANALYSIS.json"))
-    etls, _ = check_run_and_etls(analysis, load_json(os.path.join(a, "RUN.json")), fails)
+def check_tasks(p, analysis, etls, fails):
     tasks = analysis.get("tasks") or []
     if not tasks:
         fails.append(("tasks", "ANALYSIS.json has no tasks"))
@@ -352,17 +342,15 @@ def check_survey(p, fails, scope=None):
             fails.append(("tasks", "%s is in no task's units and is not the driver" % os.path.basename(f)))
 
 
-def check_analyze(p, fails, etl=None):
+def check_analyze(p, fails):
     a = p["analysis"]
     analysis = load_json(os.path.join(a, "ANALYSIS.json"))
     etls, outs = check_run_and_etls(analysis, load_json(os.path.join(a, "RUN.json")), fails)
-    units, in_scope = task_scope(analysis, etl=etl)
+    check_tasks(p, analysis, etls, fails)
     mapping_text = json.dumps(analysis.get("mapping") or {})
     line_counts = {}
     for f in pascal_files(intent(p).get("source", "")):
         line_counts[os.path.basename(f).lower()] = read(f).count("\n") + 1
-        if units is not None and unit_of(f) not in units:
-            continue
         unit, rel = scan_unit(f), os.path.basename(f)
         for name, line in unit["routines"]:
             if not (word_in(name, mapping_text) or word_in(name.split(".")[-1], mapping_text)):
@@ -375,8 +363,6 @@ def check_analyze(p, fails, etl=None):
         fails.append(("source", "no Pascal files under intent.source"))
     inventory = analysis.get("inventory") or {}
     for e in etls:
-        if in_scope is not None and e.get("id") not in in_scope:
-            continue
         ops = inventory.get(e.get("id"))
         if not isinstance(ops, list) or not ops:
             fails.append(("inventory", "%s has no ops in inventory" % e.get("id")))
@@ -393,9 +379,9 @@ def check_analyze(p, fails, etl=None):
             for w in op.get("writes") or []:
                 if str(w).split(".")[0].upper() not in outs:
                     fails.append(("inventory", "%s writes %s, not an output table" % (oid, w)))
-    rules = [r for r in analysis.get("rules") or [] if in_scope is None or r.get("etl") in in_scope]
+    rules = analysis.get("rules") or []
     if not any(r.get("priority") == "P0" for r in rules):
-        fails.append(("rules", "no P0 rule" + (" for %s" % etl if etl else "")))
+        fails.append(("rules", "no P0 rule"))
     for r in rules:
         if not re.match(r"^RULE-\d+$", str(r.get("id", ""))):
             fails.append(("rules", "rule id %r is not RULE-nnn" % r.get("id")))
@@ -418,7 +404,7 @@ def check_transform(p, fails, task=None):
     a, java = p["analysis"], p["java"]
     main_root = os.path.join(java, "src", "main", "java")
     analysis = load_json(os.path.join(a, "ANALYSIS.json"))
-    units, in_scope = task_scope(analysis, upto=task)
+    units, in_scope = task_scope(analysis, task)
     for u in (analysis.get("mapping") or {}).get("units", []):
         if units is not None and str(u.get("unit", "")).lower() not in units:
             continue
@@ -522,18 +508,15 @@ def check_verify(p, fails):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("system")
-    ap.add_argument("stage", choices=["survey", "analyze", "transform", "verify"])
-    ap.add_argument("--etl", help="analyze: check only this ETL")
+    ap.add_argument("stage", choices=["analyze", "transform", "verify"])
     ap.add_argument("--task", help="transform: check only the tasks up to this one")
     ap.add_argument("--workspace", default=".")
     a = ap.parse_args(argv)
     p = paths(a.workspace, a.system)
     fails = []
     try:
-        if a.stage == "survey":
-            check_survey(p, fails)
-        elif a.stage == "analyze":
-            check_analyze(p, fails, a.etl)
+        if a.stage == "analyze":
+            check_analyze(p, fails)
         elif a.stage == "transform":
             check_transform(p, fails, a.task)
         else:

@@ -61,12 +61,12 @@ chosen per project:
   built where Delphi is available. Its run command writes straight into the capture folder.
 
 **New program.** Java 8 (`JAVA_HOME` of a 1.8 JDK; on the testbed machine `/home/linuxbrew/.linuxbrew/opt/openjdk@8`).
-Build: `mvn -q -o -f <project>/pom.xml package -DskipTests` (drop `-o` when the local repository lacks a
-dependency). Run: `"$JAVA_HOME/bin/java" -cp "<project>/target/classes:<project>/target/lib/*" etl.BatchRun
-<case>/etl.properties`, where `etl.properties` sets `jdbc.url` to the case's database, `table.suffix=_NEW`, and
+The project is `{java}` in the migration tool's commands. Build: `mvn -q -o -f {java}/pom.xml package -DskipTests`
+(drop `-o` when the local repository lacks a dependency). Run: `"$JAVA_HOME/bin/java" -cp
+"{java}/target/classes:{java}/target/lib/*" etl.BatchRun <case>/etl.properties`, where `etl.properties` sets `jdbc.url` to the case's database, `table.suffix=_NEW`, and
 every input file path the legacy took from `ParamStr`. It writes its output to `<TABLE>_NEW` in that database;
 capture with `python3 {knowledge}/collect_sqlite.py <db> {out} <TABLE,...> --suffix _NEW`. Tests:
-`mvn -q -o -f <project>/pom.xml test` (its exit code is the result).
+`mvn -q -o -f {java}/pom.xml test` (its exit code is the result).
 
 ## Not covered here (ask; unattended defaults in brackets)
 
