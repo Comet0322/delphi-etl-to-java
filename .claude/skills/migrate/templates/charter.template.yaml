@@ -37,7 +37,7 @@ blocked:                     # machine-judged by scripts/verify_gate.py
 # preserved legacy semantics; only architecture / library / deviation choices.
 decisions:
   # - key: architecture.layout
-  #   value: one EtlJob per legacy ETL
+  #   value: one class per legacy unit, BatchRun mirrors the driver
   #   source: skill            # user | skill | assumed
   #   affects: []              # op_ids impacted if this is later overturned
 

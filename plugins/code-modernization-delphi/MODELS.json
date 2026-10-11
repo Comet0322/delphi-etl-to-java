@@ -1,0 +1,35 @@
+{
+  "_doc": "Model and effort per workload. router: the session running modernize-auto (interactively it is your session's model; headless pass --model). agents: each stage agent; the router passes `model` on every Agent call, `effort` comes from the agent file's frontmatter and must match (a test checks).",
+  "router": {
+    "model": "sonnet",
+    "effort": "low",
+    "why": "setup, dispatch, run the gate, decide; no heavy reading"
+  },
+  "agents": {
+    "stage-analyze": {
+      "model": "sonnet",
+      "effort": "medium",
+      "why": "read the source once: ETL list, mapping, inventories, rules, RUN.json"
+    },
+    "stage-audit": {
+      "model": "sonnet",
+      "effort": "medium",
+      "why": "independent referee of the analysis against the source"
+    },
+    "stage-transform": {
+      "model": "opus",
+      "effort": "medium",
+      "why": "one-to-one Java that must reproduce the legacy exactly"
+    },
+    "stage-verify": {
+      "model": "opus",
+      "effort": "medium",
+      "why": "independent re-check: tests, canary, fresh inputs, proof pack"
+    },
+    "stage-fix": {
+      "model": "opus",
+      "effort": "medium",
+      "why": "trace differences to the legacy source and fix root causes"
+    }
+  }
+}

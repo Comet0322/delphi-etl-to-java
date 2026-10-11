@@ -40,7 +40,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>etl.core.EtlRunner</mainClass>
+              <mainClass>etl.BatchRun</mainClass>
             </manifest>
           </archive>
         </configuration>
