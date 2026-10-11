@@ -1,0 +1,117 @@
+{
+ "etl": "ETL-002",
+ "ops": [
+  {
+   "op_id": "OP-01",
+   "source_loc": "uOrders.pas:35-36",
+   "does": "Drop and create T_ORDER_AMT (ORDER_ID INTEGER, CUST_ID INTEGER, AMOUNT TEXT, NOTE TEXT, STATUS TEXT)",
+   "writes": [
+    "T_ORDER_AMT"
+   ],
+   "reads": [],
+   "capability": "db.exec",
+   "implicit": [
+    "output table through Tables.out, including DDL"
+   ],
+   "rules": []
+  },
+  {
+   "op_id": "OP-02",
+   "source_loc": "uOrders.pas:37,uOrders.pas:40-47",
+   "does": "Read ORDERS ordered by ORDER_ID and skip orders with quantity 0 because GSkipVoid is True",
+   "writes": [],
+   "reads": [
+    "ORDERS.ORDER_ID",
+    "ORDERS.QTY"
+   ],
+   "capability": "db.query",
+   "implicit": [
+    "GSkipVoid is set True in FormCreate (Common.gSkipVoid)",
+    "QTY NULL is 0 so it is skipped too",
+    "ORDER BY ORDER_ID"
+   ],
+   "rules": [
+    "RULE-002"
+   ]
+  },
+  {
+   "op_id": "OP-03",
+   "source_loc": "uOrders.pas:48-51",
+   "does": "Amount = Qty*Price, then minus Amt*Disc/100, all as Currency",
+   "writes": [
+    "T_ORDER_AMT.AMOUNT"
+   ],
+   "reads": [
+    "ORDERS.QTY",
+    "ORDERS.UNIT_PRICE",
+    "ORDERS.DISCOUNT_PCT"
+   ],
+   "implicit": [
+    "Currency: BigDecimal scale 4 HALF_EVEN after every operation in legacy order",
+    "UNIT_PRICE REAL read AsCurrency (rounded to 4 decimals), NULL is 0",
+    "DISCOUNT_PCT NULL is 0",
+    "Amt*Disc/100 is Currency*Integer then / 100 assigned to Currency; keep the intermediate at scale 4 in the order (Amt*Disc) then /100; confirm rounding mode of the division by the dual run"
+   ],
+   "rules": [
+    "RULE-003"
+   ]
+  },
+  {
+   "op_id": "OP-04",
+   "source_loc": "uOrders.pas:52",
+   "does": "Status 'S' when discount > 10 else 'N'",
+   "writes": [
+    "T_ORDER_AMT.STATUS"
+   ],
+   "reads": [
+    "ORDERS.DISCOUNT_PCT"
+   ],
+   "implicit": [
+    "strict greater-than: 10 is 'N'"
+   ],
+   "rules": [
+    "RULE-004"
+   ]
+  },
+  {
+   "op_id": "OP-05",
+   "source_loc": "uOrders.pas:15-26,uOrders.pas:55",
+   "does": "AMOUNT text = CentsToStr(Round(Amt*100)): sign, whole part, '.', two digits",
+   "writes": [
+    "T_ORDER_AMT.AMOUNT"
+   ],
+   "reads": [],
+   "implicit": [
+    "Round is half-to-even",
+    "Cents negated before div/mod, so negative amounts format as -x.yy",
+    "Format('%.2d') pads cents to 2 digits"
+   ],
+   "rules": [
+    "RULE-003"
+   ]
+  },
+  {
+   "op_id": "OP-06",
+   "source_loc": "uOrders.pas:38,uOrders.pas:53-58",
+   "does": "Insert ORDER_ID, CUST_ID, AMOUNT, NOTE, STATUS row",
+   "writes": [
+    "T_ORDER_AMT.ORDER_ID",
+    "T_ORDER_AMT.CUST_ID",
+    "T_ORDER_AMT.AMOUNT",
+    "T_ORDER_AMT.NOTE",
+    "T_ORDER_AMT.STATUS"
+   ],
+   "reads": [
+    "ORDERS.ORDER_ID",
+    "ORDERS.CUST_ID",
+    "ORDERS.NOTE"
+   ],
+   "capability": "db.write",
+   "implicit": [
+    "NOTE NULL is written as ''",
+    "CUST_ID NULL is 0"
+   ],
+   "rules": []
+  }
+ ]
+}

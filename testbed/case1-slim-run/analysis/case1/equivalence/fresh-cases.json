@@ -1,0 +1,284 @@
+{
+  "system": "",
+  "legacy": {
+    "label": "legacy"
+  },
+  "new": {
+    "label": "new"
+  },
+  "cases": [
+    {
+      "id": "F01-T_CUST_CLEAN",
+      "input": "F01",
+      "title": "ETL-001 T_CUST_CLEAN on input F01",
+      "legacy": "fresh/legacy/F01/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F01/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F01-T_ORDER_AMT",
+      "input": "F01",
+      "title": "ETL-002 T_ORDER_AMT on input F01",
+      "legacy": "fresh/legacy/F01/T_ORDER_AMT.csv",
+      "new": "fresh/new/F01/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F01-T_CITY_SUM",
+      "input": "F01",
+      "title": "ETL-003 T_CITY_SUM on input F01",
+      "legacy": "fresh/legacy/F01/T_CITY_SUM.csv",
+      "new": "fresh/new/F01/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F02-T_CUST_CLEAN",
+      "input": "F02",
+      "title": "ETL-001 T_CUST_CLEAN on input F02",
+      "legacy": "fresh/legacy/F02/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F02/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F02-T_ORDER_AMT",
+      "input": "F02",
+      "title": "ETL-002 T_ORDER_AMT on input F02",
+      "legacy": "fresh/legacy/F02/T_ORDER_AMT.csv",
+      "new": "fresh/new/F02/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F02-T_CITY_SUM",
+      "input": "F02",
+      "title": "ETL-003 T_CITY_SUM on input F02",
+      "legacy": "fresh/legacy/F02/T_CITY_SUM.csv",
+      "new": "fresh/new/F02/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F03-T_CUST_CLEAN",
+      "input": "F03",
+      "title": "ETL-001 T_CUST_CLEAN on input F03",
+      "legacy": "fresh/legacy/F03/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F03/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F03-T_ORDER_AMT",
+      "input": "F03",
+      "title": "ETL-002 T_ORDER_AMT on input F03",
+      "legacy": "fresh/legacy/F03/T_ORDER_AMT.csv",
+      "new": "fresh/new/F03/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F03-T_CITY_SUM",
+      "input": "F03",
+      "title": "ETL-003 T_CITY_SUM on input F03",
+      "legacy": "fresh/legacy/F03/T_CITY_SUM.csv",
+      "new": "fresh/new/F03/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F04-T_CUST_CLEAN",
+      "input": "F04",
+      "title": "ETL-001 T_CUST_CLEAN on input F04",
+      "legacy": "fresh/legacy/F04/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F04/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F04-T_ORDER_AMT",
+      "input": "F04",
+      "title": "ETL-002 T_ORDER_AMT on input F04",
+      "legacy": "fresh/legacy/F04/T_ORDER_AMT.csv",
+      "new": "fresh/new/F04/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F04-T_CITY_SUM",
+      "input": "F04",
+      "title": "ETL-003 T_CITY_SUM on input F04",
+      "legacy": "fresh/legacy/F04/T_CITY_SUM.csv",
+      "new": "fresh/new/F04/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F05-T_CUST_CLEAN",
+      "input": "F05",
+      "title": "ETL-001 T_CUST_CLEAN on input F05",
+      "legacy": "fresh/legacy/F05/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F05/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F05-T_ORDER_AMT",
+      "input": "F05",
+      "title": "ETL-002 T_ORDER_AMT on input F05",
+      "legacy": "fresh/legacy/F05/T_ORDER_AMT.csv",
+      "new": "fresh/new/F05/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F05-T_CITY_SUM",
+      "input": "F05",
+      "title": "ETL-003 T_CITY_SUM on input F05",
+      "legacy": "fresh/legacy/F05/T_CITY_SUM.csv",
+      "new": "fresh/new/F05/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F06-T_CUST_CLEAN",
+      "input": "F06",
+      "title": "ETL-001 T_CUST_CLEAN on input F06",
+      "legacy": "fresh/legacy/F06/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F06/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F06-T_ORDER_AMT",
+      "input": "F06",
+      "title": "ETL-002 T_ORDER_AMT on input F06",
+      "legacy": "fresh/legacy/F06/T_ORDER_AMT.csv",
+      "new": "fresh/new/F06/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F06-T_CITY_SUM",
+      "input": "F06",
+      "title": "ETL-003 T_CITY_SUM on input F06",
+      "legacy": "fresh/legacy/F06/T_CITY_SUM.csv",
+      "new": "fresh/new/F06/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F07-T_CUST_CLEAN",
+      "input": "F07",
+      "title": "ETL-001 T_CUST_CLEAN on input F07",
+      "legacy": "fresh/legacy/F07/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F07/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F07-T_ORDER_AMT",
+      "input": "F07",
+      "title": "ETL-002 T_ORDER_AMT on input F07",
+      "legacy": "fresh/legacy/F07/T_ORDER_AMT.csv",
+      "new": "fresh/new/F07/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F07-T_CITY_SUM",
+      "input": "F07",
+      "title": "ETL-003 T_CITY_SUM on input F07",
+      "legacy": "fresh/legacy/F07/T_CITY_SUM.csv",
+      "new": "fresh/new/F07/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F08-T_CUST_CLEAN",
+      "input": "F08",
+      "title": "ETL-001 T_CUST_CLEAN on input F08",
+      "legacy": "fresh/legacy/F08/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F08/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F08-T_ORDER_AMT",
+      "input": "F08",
+      "title": "ETL-002 T_ORDER_AMT on input F08",
+      "legacy": "fresh/legacy/F08/T_ORDER_AMT.csv",
+      "new": "fresh/new/F08/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F08-T_CITY_SUM",
+      "input": "F08",
+      "title": "ETL-003 T_CITY_SUM on input F08",
+      "legacy": "fresh/legacy/F08/T_CITY_SUM.csv",
+      "new": "fresh/new/F08/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F09-T_CUST_CLEAN",
+      "input": "F09",
+      "title": "ETL-001 T_CUST_CLEAN on input F09",
+      "legacy": "fresh/legacy/F09/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F09/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F09-T_ORDER_AMT",
+      "input": "F09",
+      "title": "ETL-002 T_ORDER_AMT on input F09",
+      "legacy": "fresh/legacy/F09/T_ORDER_AMT.csv",
+      "new": "fresh/new/F09/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F09-T_CITY_SUM",
+      "input": "F09",
+      "title": "ETL-003 T_CITY_SUM on input F09",
+      "legacy": "fresh/legacy/F09/T_CITY_SUM.csv",
+      "new": "fresh/new/F09/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F10-T_CUST_CLEAN",
+      "input": "F10",
+      "title": "ETL-001 T_CUST_CLEAN on input F10",
+      "legacy": "fresh/legacy/F10/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F10/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F10-T_ORDER_AMT",
+      "input": "F10",
+      "title": "ETL-002 T_ORDER_AMT on input F10",
+      "legacy": "fresh/legacy/F10/T_ORDER_AMT.csv",
+      "new": "fresh/new/F10/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F10-T_CITY_SUM",
+      "input": "F10",
+      "title": "ETL-003 T_CITY_SUM on input F10",
+      "legacy": "fresh/legacy/F10/T_CITY_SUM.csv",
+      "new": "fresh/new/F10/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F11-T_CUST_CLEAN",
+      "input": "F11",
+      "title": "ETL-001 T_CUST_CLEAN on input F11",
+      "legacy": "fresh/legacy/F11/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F11/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F11-T_ORDER_AMT",
+      "input": "F11",
+      "title": "ETL-002 T_ORDER_AMT on input F11",
+      "legacy": "fresh/legacy/F11/T_ORDER_AMT.csv",
+      "new": "fresh/new/F11/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F11-T_CITY_SUM",
+      "input": "F11",
+      "title": "ETL-003 T_CITY_SUM on input F11",
+      "legacy": "fresh/legacy/F11/T_CITY_SUM.csv",
+      "new": "fresh/new/F11/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F12-T_CUST_CLEAN",
+      "input": "F12",
+      "title": "ETL-001 T_CUST_CLEAN on input F12",
+      "legacy": "fresh/legacy/F12/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F12/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F12-T_ORDER_AMT",
+      "input": "F12",
+      "title": "ETL-002 T_ORDER_AMT on input F12",
+      "legacy": "fresh/legacy/F12/T_ORDER_AMT.csv",
+      "new": "fresh/new/F12/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F12-T_CITY_SUM",
+      "input": "F12",
+      "title": "ETL-003 T_CITY_SUM on input F12",
+      "legacy": "fresh/legacy/F12/T_CITY_SUM.csv",
+      "new": "fresh/new/F12/T_CITY_SUM.csv"
+    },
+    {
+      "id": "F13-T_CUST_CLEAN",
+      "input": "F13",
+      "title": "ETL-001 T_CUST_CLEAN on input F13",
+      "legacy": "fresh/legacy/F13/T_CUST_CLEAN.csv",
+      "new": "fresh/new/F13/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "F13-T_ORDER_AMT",
+      "input": "F13",
+      "title": "ETL-002 T_ORDER_AMT on input F13",
+      "legacy": "fresh/legacy/F13/T_ORDER_AMT.csv",
+      "new": "fresh/new/F13/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "F13-T_CITY_SUM",
+      "input": "F13",
+      "title": "ETL-003 T_CITY_SUM on input F13",
+      "legacy": "fresh/legacy/F13/T_CITY_SUM.csv",
+      "new": "fresh/new/F13/T_CITY_SUM.csv"
+    }
+  ]
+}

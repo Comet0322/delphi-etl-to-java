@@ -1,0 +1,15 @@
+{"categories": {
+  "null_empty_zero": ["F01"],
+  "thresholds": ["F02"],
+  "rounding_ties": ["F03"],
+  "empty_table": ["F04"],
+  "empty_input_file": ["F05"],
+  "duplicate_keys": ["F06"],
+  "missing_parent": ["F07"],
+  "large_values": ["F08"],
+  "date_sentinels": ["F09"],
+  "char_spaces": ["F10"],
+  "charset_bytes": ["F11", "F12"],
+  "city_bucket_order": ["F07", "F13"]
+ },
+ "not_applicable": {}}

@@ -1,0 +1,54 @@
+{
+ "system": "case1",
+ "tables": [
+  {
+   "name": "T_CUST_CLEAN",
+   "key": [
+    "CUST_ID"
+   ],
+   "etl": "ETL-001"
+  },
+  {
+   "name": "T_ORDER_AMT",
+   "key": [
+    "ORDER_ID"
+   ],
+   "etl": "ETL-002"
+  },
+  {
+   "name": "T_CITY_SUM",
+   "key": [
+    "CITY"
+   ],
+   "etl": "ETL-003"
+  }
+ ],
+ "csv": {
+  "null": "\\N"
+ },
+ "env": {
+  "JAVA_HOME": "/home/linuxbrew/.linuxbrew/opt/openjdk@8"
+ },
+ "legacy": {
+  "build": "mkdir -p {ws}/analysis/case1/build/legacy && fpc -Mdelphi -FU{ws}/analysis/case1/build/legacy -FE{ws}/analysis/case1/build/legacy {ws}/legacy/case1/LegacyEtl.pas",
+  "run": "chmod -R u+w {work} && {ws}/analysis/case1/build/legacy/LegacyEtl {work}/legacy.db {work}/cust_notes.txt",
+  "capture": "python3 /mnt/a0df7f69-337a-4cb4-a10a-f48243e3ddfc/Code/CodeMigration2/plugins/code-modernization-delphi/scripts/collect_sqlite.py {work}/legacy.db {out} T_CUST_CLEAN,T_ORDER_AMT,T_CITY_SUM",
+  "recorded": false
+ },
+ "new": {
+  "build": "mvn -q -o -f {ws}/modernized/case1/java/pom.xml package -DskipTests",
+  "run": "chmod -R u+w {work} && \"$JAVA_HOME/bin/java\" -cp \"{ws}/modernized/case1/java/target/classes:{ws}/modernized/case1/java/target/lib/*\" etl.BatchRun {work}/etl.properties",
+  "capture": "python3 /mnt/a0df7f69-337a-4cb4-a10a-f48243e3ddfc/Code/CodeMigration2/plugins/code-modernization-delphi/scripts/collect_sqlite.py {work}/legacy.db {out} T_CUST_CLEAN,T_ORDER_AMT,T_CITY_SUM --suffix _NEW",
+  "test": "mvn -q -o -f {ws}/modernized/case1/java/pom.xml clean test -Dmaven.test.failure.ignore=true",
+  "properties": {
+   "path": "{work}/etl.properties",
+   "values": {
+    "jdbc.url": "jdbc:sqlite:{work}/legacy.db",
+    "jdbc.user": "",
+    "jdbc.password": "",
+    "table.suffix": "_NEW",
+    "notes.file": "{work}/cust_notes.txt"
+   }
+  }
+ }
+}

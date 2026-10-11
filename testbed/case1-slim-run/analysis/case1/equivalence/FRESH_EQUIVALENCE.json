@@ -1,0 +1,884 @@
+{
+  "system": "",
+  "generated": "2026-10-11T11:48:31Z",
+  "legacy": {
+    "label": "legacy",
+    "command": ""
+  },
+  "new": {
+    "label": "new",
+    "command": ""
+  },
+  "selfCheck": {
+    "passed": true,
+    "detail": "each legacy output was compared with a copy changed by one byte and reported as different"
+  },
+  "totals": {
+    "cases": 39,
+    "executed": 39,
+    "same": 39,
+    "differs": 0,
+    "differsApproved": 0,
+    "missing": 0
+  },
+  "cases": [
+    {
+      "id": "F01-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F01",
+      "verdict": "same",
+      "reason": "Identical, 217 bytes.",
+      "legacyPath": "fresh/legacy/F01/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F01/T_CUST_CLEAN.csv",
+      "legacySha256": "f16e0620be1da0d9fb3c838ad3ce83815d54c6a41e1be98bad60bab764368257",
+      "newSha256": "f16e0620be1da0d9fb3c838ad3ce83815d54c6a41e1be98bad60bab764368257",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 217,
+        "new": 217
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F01-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F01",
+      "verdict": "same",
+      "reason": "Identical, 190 bytes.",
+      "legacyPath": "fresh/legacy/F01/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F01/T_ORDER_AMT.csv",
+      "legacySha256": "1ee5a128ac8b6593eae34de85c464f820b0b6355bab3586cb59b8ccb931a55a0",
+      "newSha256": "1ee5a128ac8b6593eae34de85c464f820b0b6355bab3586cb59b8ccb931a55a0",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 190,
+        "new": 190
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F01-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F01",
+      "verdict": "same",
+      "reason": "Identical, 65 bytes.",
+      "legacyPath": "fresh/legacy/F01/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F01/T_CITY_SUM.csv",
+      "legacySha256": "262ef89e6d807aba57c0086c3a5fe5c0e1d98930b6aab49f8302c6fb586973a1",
+      "newSha256": "262ef89e6d807aba57c0086c3a5fe5c0e1d98930b6aab49f8302c6fb586973a1",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 65,
+        "new": 65
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F02-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F02",
+      "verdict": "same",
+      "reason": "Identical, 161 bytes.",
+      "legacyPath": "fresh/legacy/F02/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F02/T_CUST_CLEAN.csv",
+      "legacySha256": "5f6e08bf0c0a9116ea8ed314ccd040741826dd93049194dc6dcdd1699ec2e739",
+      "newSha256": "5f6e08bf0c0a9116ea8ed314ccd040741826dd93049194dc6dcdd1699ec2e739",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 161,
+        "new": 161
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F02-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F02",
+      "verdict": "same",
+      "reason": "Identical, 382 bytes.",
+      "legacyPath": "fresh/legacy/F02/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F02/T_ORDER_AMT.csv",
+      "legacySha256": "2692b9554846304a77503a1cbd1d7fd9f8c40df296a8770c05c97fa9a00986f2",
+      "newSha256": "2692b9554846304a77503a1cbd1d7fd9f8c40df296a8770c05c97fa9a00986f2",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 382,
+        "new": 382
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F02-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F02",
+      "verdict": "same",
+      "reason": "Identical, 84 bytes.",
+      "legacyPath": "fresh/legacy/F02/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F02/T_CITY_SUM.csv",
+      "legacySha256": "f3805ce42b82f6d422bb3180de2f924efa39a050ce85d8078223421ea3bd037d",
+      "newSha256": "f3805ce42b82f6d422bb3180de2f924efa39a050ce85d8078223421ea3bd037d",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 84,
+        "new": 84
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F03-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F03",
+      "verdict": "same",
+      "reason": "Identical, 161 bytes.",
+      "legacyPath": "fresh/legacy/F03/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F03/T_CUST_CLEAN.csv",
+      "legacySha256": "5f6e08bf0c0a9116ea8ed314ccd040741826dd93049194dc6dcdd1699ec2e739",
+      "newSha256": "5f6e08bf0c0a9116ea8ed314ccd040741826dd93049194dc6dcdd1699ec2e739",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 161,
+        "new": 161
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F03-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F03",
+      "verdict": "same",
+      "reason": "Identical, 2105 bytes.",
+      "legacyPath": "fresh/legacy/F03/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F03/T_ORDER_AMT.csv",
+      "legacySha256": "82d77577517d9cff012fb71ed83c0f155eb19ea4350becf821609f69d0d6ca5d",
+      "newSha256": "82d77577517d9cff012fb71ed83c0f155eb19ea4350becf821609f69d0d6ca5d",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 2105,
+        "new": 2105
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F03-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F03",
+      "verdict": "same",
+      "reason": "Identical, 88 bytes.",
+      "legacyPath": "fresh/legacy/F03/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F03/T_CITY_SUM.csv",
+      "legacySha256": "f293b1ef716a0f45e65cdc02256193850be6cbf8bde779fc021e21dca14e256e",
+      "newSha256": "f293b1ef716a0f45e65cdc02256193850be6cbf8bde779fc021e21dca14e256e",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 88,
+        "new": 88
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F04-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F04",
+      "verdict": "same",
+      "reason": "Identical, 43 bytes.",
+      "legacyPath": "fresh/legacy/F04/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F04/T_CUST_CLEAN.csv",
+      "legacySha256": "1bf708b5c84ddc4162ae41ced6f0bb9456c362e3b26475409d5fb358e8ae2397",
+      "newSha256": "1bf708b5c84ddc4162ae41ced6f0bb9456c362e3b26475409d5fb358e8ae2397",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 43,
+        "new": 43
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F04-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F04",
+      "verdict": "same",
+      "reason": "Identical, 46 bytes.",
+      "legacyPath": "fresh/legacy/F04/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F04/T_ORDER_AMT.csv",
+      "legacySha256": "8ef09073c3afc6b8622cd49073f4306d180a4b744533c49ed55b210c32238752",
+      "newSha256": "8ef09073c3afc6b8622cd49073f4306d180a4b744533c49ed55b210c32238752",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 46,
+        "new": 46
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F04-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F04",
+      "verdict": "same",
+      "reason": "Identical, 27 bytes.",
+      "legacyPath": "fresh/legacy/F04/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F04/T_CITY_SUM.csv",
+      "legacySha256": "8c60755e7cfff3f7f7f82cf920d50bf97178158bf758e6aea0560ae284578a79",
+      "newSha256": "8c60755e7cfff3f7f7f82cf920d50bf97178158bf758e6aea0560ae284578a79",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 27,
+        "new": 27
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F05-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F05",
+      "verdict": "same",
+      "reason": "Identical, 144 bytes.",
+      "legacyPath": "fresh/legacy/F05/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F05/T_CUST_CLEAN.csv",
+      "legacySha256": "eb0945b4b8ce795af8acc8ce9689bb81766080902eb82a109ed99165be119013",
+      "newSha256": "eb0945b4b8ce795af8acc8ce9689bb81766080902eb82a109ed99165be119013",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 144,
+        "new": 144
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F05-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F05",
+      "verdict": "same",
+      "reason": "Identical, 104 bytes.",
+      "legacyPath": "fresh/legacy/F05/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F05/T_ORDER_AMT.csv",
+      "legacySha256": "bb8dbba4d377ffdbdc02485fc83dd78be48d037594ed37a22f1bcee8f5872c50",
+      "newSha256": "bb8dbba4d377ffdbdc02485fc83dd78be48d037594ed37a22f1bcee8f5872c50",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 104,
+        "new": 104
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F05-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F05",
+      "verdict": "same",
+      "reason": "Identical, 84 bytes.",
+      "legacyPath": "fresh/legacy/F05/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F05/T_CITY_SUM.csv",
+      "legacySha256": "5ad0bea70b4e4cb5aab000ecfe88dd87911c4f4443b7b79111bfd456182a9547",
+      "newSha256": "5ad0bea70b4e4cb5aab000ecfe88dd87911c4f4443b7b79111bfd456182a9547",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 84,
+        "new": 84
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F06-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F06",
+      "verdict": "same",
+      "reason": "Identical, 232 bytes.",
+      "legacyPath": "fresh/legacy/F06/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F06/T_CUST_CLEAN.csv",
+      "legacySha256": "adb68d7392eba27f04907632104911caba3a156ff558dd647f170439aa8100c1",
+      "newSha256": "adb68d7392eba27f04907632104911caba3a156ff558dd647f170439aa8100c1",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 232,
+        "new": 232
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F06-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F06",
+      "verdict": "same",
+      "reason": "Identical, 141 bytes.",
+      "legacyPath": "fresh/legacy/F06/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F06/T_ORDER_AMT.csv",
+      "legacySha256": "8dfafc537826b016c4843f9530f578691e496034b77795e48d813664e3e8b248",
+      "newSha256": "8dfafc537826b016c4843f9530f578691e496034b77795e48d813664e3e8b248",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 141,
+        "new": 141
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F06-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F06",
+      "verdict": "same",
+      "reason": "Identical, 86 bytes.",
+      "legacyPath": "fresh/legacy/F06/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F06/T_CITY_SUM.csv",
+      "legacySha256": "7a7c69916b80b957b98dd848167d2f0760912325a732e53a3259e4ab9ec9e800",
+      "newSha256": "7a7c69916b80b957b98dd848167d2f0760912325a732e53a3259e4ab9ec9e800",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 86,
+        "new": 86
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F07-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F07",
+      "verdict": "same",
+      "reason": "Identical, 275 bytes.",
+      "legacyPath": "fresh/legacy/F07/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F07/T_CUST_CLEAN.csv",
+      "legacySha256": "40d27c21ff35cd05e2dfed200a9ae884a1e9e583edc00ce1bcf5e1c87f6a2898",
+      "newSha256": "40d27c21ff35cd05e2dfed200a9ae884a1e9e583edc00ce1bcf5e1c87f6a2898",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 275,
+        "new": 275
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F07-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F07",
+      "verdict": "same",
+      "reason": "Identical, 322 bytes.",
+      "legacyPath": "fresh/legacy/F07/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F07/T_ORDER_AMT.csv",
+      "legacySha256": "933155d1f1f54b11045e0e91f8cbe4ecf4f3d83e5f1abdb0383b1044f7a462fc",
+      "newSha256": "933155d1f1f54b11045e0e91f8cbe4ecf4f3d83e5f1abdb0383b1044f7a462fc",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 322,
+        "new": 322
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F07-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F07",
+      "verdict": "same",
+      "reason": "Identical, 89 bytes.",
+      "legacyPath": "fresh/legacy/F07/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F07/T_CITY_SUM.csv",
+      "legacySha256": "b318561b46502966907b3b8250e34af596e7184860f6a7b8c30939fcf13167c3",
+      "newSha256": "b318561b46502966907b3b8250e34af596e7184860f6a7b8c30939fcf13167c3",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 89,
+        "new": 89
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F08-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F08",
+      "verdict": "same",
+      "reason": "Identical, 241 bytes.",
+      "legacyPath": "fresh/legacy/F08/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F08/T_CUST_CLEAN.csv",
+      "legacySha256": "790a22d9d510822971a3ec8c65ebc40e0d1d07602f8fea1c69c3af0e923b64b7",
+      "newSha256": "790a22d9d510822971a3ec8c65ebc40e0d1d07602f8fea1c69c3af0e923b64b7",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 241,
+        "new": 241
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F08-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F08",
+      "verdict": "same",
+      "reason": "Identical, 674 bytes.",
+      "legacyPath": "fresh/legacy/F08/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F08/T_ORDER_AMT.csv",
+      "legacySha256": "246cd42431f0b775ba46282cd2982ab9183f37d3d12ddce090917859f436b536",
+      "newSha256": "246cd42431f0b775ba46282cd2982ab9183f37d3d12ddce090917859f436b536",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 674,
+        "new": 674
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F08-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F08",
+      "verdict": "same",
+      "reason": "Identical, 85 bytes.",
+      "legacyPath": "fresh/legacy/F08/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F08/T_CITY_SUM.csv",
+      "legacySha256": "b6f10495f819e40be5f1692efc98e8afc3b057236a2583cb6cc4f4ccd3563496",
+      "newSha256": "b6f10495f819e40be5f1692efc98e8afc3b057236a2583cb6cc4f4ccd3563496",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 85,
+        "new": 85
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F09-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F09",
+      "verdict": "same",
+      "reason": "Identical, 505 bytes.",
+      "legacyPath": "fresh/legacy/F09/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F09/T_CUST_CLEAN.csv",
+      "legacySha256": "547d6ac01d1abeca35cdde5d0c4a38db46fc9e14d44a9fe7992c1acc6ec371c8",
+      "newSha256": "547d6ac01d1abeca35cdde5d0c4a38db46fc9e14d44a9fe7992c1acc6ec371c8",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 505,
+        "new": 505
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F09-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F09",
+      "verdict": "same",
+      "reason": "Identical, 328 bytes.",
+      "legacyPath": "fresh/legacy/F09/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F09/T_ORDER_AMT.csv",
+      "legacySha256": "3849049ec41243712cfd3460e4eb4b5c289220ec301ce53c0015a4da3b8615bf",
+      "newSha256": "3849049ec41243712cfd3460e4eb4b5c289220ec301ce53c0015a4da3b8615bf",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 328,
+        "new": 328
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F09-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F09",
+      "verdict": "same",
+      "reason": "Identical, 47 bytes.",
+      "legacyPath": "fresh/legacy/F09/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F09/T_CITY_SUM.csv",
+      "legacySha256": "60bf7060c82c55acb907963d3fd687641a56333ce588b1f137f651ebddc5457f",
+      "newSha256": "60bf7060c82c55acb907963d3fd687641a56333ce588b1f137f651ebddc5457f",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 47,
+        "new": 47
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F10-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F10",
+      "verdict": "same",
+      "reason": "Identical, 274 bytes.",
+      "legacyPath": "fresh/legacy/F10/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F10/T_CUST_CLEAN.csv",
+      "legacySha256": "18a55d529b390626c388f168e12788c4f12164302b164a077a20cbf2827441d4",
+      "newSha256": "18a55d529b390626c388f168e12788c4f12164302b164a077a20cbf2827441d4",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 274,
+        "new": 274
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F10-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F10",
+      "verdict": "same",
+      "reason": "Identical, 181 bytes.",
+      "legacyPath": "fresh/legacy/F10/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F10/T_ORDER_AMT.csv",
+      "legacySha256": "0e80d8ea5b27a17436169f1343905466c4f3e48a0646a82dde1c4e70eacbdaa0",
+      "newSha256": "0e80d8ea5b27a17436169f1343905466c4f3e48a0646a82dde1c4e70eacbdaa0",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 181,
+        "new": 181
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F10-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F10",
+      "verdict": "same",
+      "reason": "Identical, 141 bytes.",
+      "legacyPath": "fresh/legacy/F10/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F10/T_CITY_SUM.csv",
+      "legacySha256": "413f035fc85a5b1749f2a09fb0b7e8b303d8c98d1d0f6a0f2d972c4d8e0f4c4e",
+      "newSha256": "413f035fc85a5b1749f2a09fb0b7e8b303d8c98d1d0f6a0f2d972c4d8e0f4c4e",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 141,
+        "new": 141
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F11-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F11",
+      "verdict": "same",
+      "reason": "Identical, 536 bytes.",
+      "legacyPath": "fresh/legacy/F11/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F11/T_CUST_CLEAN.csv",
+      "legacySha256": "6096a16855a318cef21fdc6bbba5b681957bd3054b7f77b0932973dff246e54a",
+      "newSha256": "6096a16855a318cef21fdc6bbba5b681957bd3054b7f77b0932973dff246e54a",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 536,
+        "new": 536
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F11-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F11",
+      "verdict": "same",
+      "reason": "Identical, 104 bytes.",
+      "legacyPath": "fresh/legacy/F11/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F11/T_ORDER_AMT.csv",
+      "legacySha256": "bb8dbba4d377ffdbdc02485fc83dd78be48d037594ed37a22f1bcee8f5872c50",
+      "newSha256": "bb8dbba4d377ffdbdc02485fc83dd78be48d037594ed37a22f1bcee8f5872c50",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 104,
+        "new": 104
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F11-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F11",
+      "verdict": "same",
+      "reason": "Identical, 47 bytes.",
+      "legacyPath": "fresh/legacy/F11/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F11/T_CITY_SUM.csv",
+      "legacySha256": "1300303c64772a9eb3478639e6bd029d57550f9fda22a43b81db85465f33962e",
+      "newSha256": "1300303c64772a9eb3478639e6bd029d57550f9fda22a43b81db85465f33962e",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 47,
+        "new": 47
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F12-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F12",
+      "verdict": "same",
+      "reason": "Identical, 212 bytes.",
+      "legacyPath": "fresh/legacy/F12/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F12/T_CUST_CLEAN.csv",
+      "legacySha256": "3fbc522c3a419c33c3c5a9822ed55602856e8a1611dd2fbce84a4ff3fdd35339",
+      "newSha256": "3fbc522c3a419c33c3c5a9822ed55602856e8a1611dd2fbce84a4ff3fdd35339",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 212,
+        "new": 212
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F12-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F12",
+      "verdict": "same",
+      "reason": "Identical, 104 bytes.",
+      "legacyPath": "fresh/legacy/F12/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F12/T_ORDER_AMT.csv",
+      "legacySha256": "bb8dbba4d377ffdbdc02485fc83dd78be48d037594ed37a22f1bcee8f5872c50",
+      "newSha256": "bb8dbba4d377ffdbdc02485fc83dd78be48d037594ed37a22f1bcee8f5872c50",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 104,
+        "new": 104
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F12-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F12",
+      "verdict": "same",
+      "reason": "Identical, 84 bytes.",
+      "legacyPath": "fresh/legacy/F12/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F12/T_CITY_SUM.csv",
+      "legacySha256": "5ad0bea70b4e4cb5aab000ecfe88dd87911c4f4443b7b79111bfd456182a9547",
+      "newSha256": "5ad0bea70b4e4cb5aab000ecfe88dd87911c4f4443b7b79111bfd456182a9547",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 84,
+        "new": 84
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F13-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input F13",
+      "verdict": "same",
+      "reason": "Identical, 677 bytes.",
+      "legacyPath": "fresh/legacy/F13/T_CUST_CLEAN.csv",
+      "newPath": "fresh/new/F13/T_CUST_CLEAN.csv",
+      "legacySha256": "312d4b7694818d3373d8a3e7083a99e83810f417038a7da19b0420c95f4e6596",
+      "newSha256": "312d4b7694818d3373d8a3e7083a99e83810f417038a7da19b0420c95f4e6596",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 677,
+        "new": 677
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F13-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input F13",
+      "verdict": "same",
+      "reason": "Identical, 1251 bytes.",
+      "legacyPath": "fresh/legacy/F13/T_ORDER_AMT.csv",
+      "newPath": "fresh/new/F13/T_ORDER_AMT.csv",
+      "legacySha256": "411fec1ccbb77e7ed1d0889551ebef741aee3eb0b5631bcb419f0bcde34a920f",
+      "newSha256": "411fec1ccbb77e7ed1d0889551ebef741aee3eb0b5631bcb419f0bcde34a920f",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 1251,
+        "new": 1251
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "F13-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input F13",
+      "verdict": "same",
+      "reason": "Identical, 407 bytes.",
+      "legacyPath": "fresh/legacy/F13/T_CITY_SUM.csv",
+      "newPath": "fresh/new/F13/T_CITY_SUM.csv",
+      "legacySha256": "b2772f5e7158993460ab747ba2369df8adb24112008f50a3c70e63bc00f9c090",
+      "newSha256": "b2772f5e7158993460ab747ba2369df8adb24112008f50a3c70e63bc00f9c090",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 407,
+        "new": 407
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    }
+  ]
+}

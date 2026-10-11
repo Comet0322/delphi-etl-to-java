@@ -1,0 +1,274 @@
+{
+  "v": 1,
+  "system": "case1",
+  "generated": "2026-10-11 11:49 UTC",
+  "asked": "java",
+  "rules": [
+    "PROVEN needs every check to pass: the six below, and for an uplift three more (7 to 9). NOT PROVEN when any check fails. PARTLY PROVEN when nothing failed but a check could not pass.",
+    "1. Tests ran: at least one test executed in a fresh run, none failed, none was skipped without a reason, and every result file is newer than the code. The counts must be read by this script from result files or a saved raw runner log; counts only typed in cannot reach PROVEN.",
+    "2. Rules traced (rewrite and reimagine): every P0 rule the module answers for is backed by a test that ran and passed: its id is in the test or class name of a result this script parsed, or a test file names it on a line not marked skipped or pending and that file's class ran and passed. A rule named only by skipped, pending or failing tests is named, not run; one only the notes name is claimed. Neither is tested.",
+    "3. Same behavior: the development cases, judged again by compare.py, executed at least one case and none differs or is missing (a difference a person approved is allowed and listed); for an uplift, no regression, no new failure, no missing test and no drop in executed tests against BASELINE.md.",
+    "4. Fresh inputs: at least 10 new inputs, none with the same output as a development case, ran on the legacy and the new code with no difference. Needed whenever the legacy could run here; when it could not, the proof is trace-based and the best verdict is PARTLY PROVEN.",
+    "5. Canary: a deliberate one-line break whose own result file or saved runner log shows failing tests. A line in the notes is a claim.",
+    "6. Source untouched: no file under legacy/<system> is newer than the analysis (PREFLIGHT.md), by a plain file walk; no version-control tool is run.",
+    "7. Baseline measured (uplift): the old version's numbers in BASELINE.md come from per-test result files, a per-test results file or a raw runner log that this script parsed (in analysis/<system>/baseline/, or on a Recorded: or Machine-readable: line of BASELINE.md), and the typed table agrees with them. A table typed by hand, or sources that disagree, cannot reach PROVEN.",
+    "8. Tests kept (uplift): no test file of the untouched legacy tree is missing from the working copy, no more than 25% of them changed, and the legacy tree has test files to compare against (walked by file, no process is run). The list is for a person to review; weakened assertions cannot be detected, only that files changed.",
+    "9. Deltas covered (uplift): every Behavioral-silent delta in DELTA_CATALOG.md has its site's file named, as a whole word, by some test file of the working copy. A name is not proof that the test exercises the change.",
+    "Open questions, unticked criteria and the sign-off are for a person. They never change the verdict.",
+    "A folder that holds only test code and the files that build it is test tooling: it is listed, not judged, and not counted."
+  ],
+  "legacy": {
+    "state": "clean",
+    "method": "by modification time, and no version-control tool was run",
+    "detail": "no file changed after the analysis started (5 files compared)",
+    "files": [],
+    "path": "legacy/case1",
+    "target": "/tmp/claude-1000/-mnt-a0df7f69-337a-4cb4-a10a-f48243e3ddfc-Code-CodeMigration2/ef7f9c1b-0600-4386-8caa-a102b43a32a7/scratchpad/case1-cm/_given/src",
+    "ran": true
+  },
+  "problems": [],
+  "modules": [
+    {
+      "name": "java",
+      "track": "rewrite",
+      "path": "modernized/case1/java",
+      "verdict": "PROVEN",
+      "reasons": [],
+      "passed": [
+        "Tests ran: 27 test(s) executed, 0 failed, 0 skipped.",
+        "Rules traced: All 4 P0 rule(s) this module answers for are backed by a test that ran and passed.",
+        "Same behavior: 3 of 3 development case(s) executed: 3 same, 0 differ, 0 missing; comparator self-check passed.",
+        "Fresh inputs: 13 new input(s), 39 comparison(s), ran on the legacy and the new code with no difference.",
+        "Canary: 1 canary run(s) shown by a result file or log; the first (DelphiRtl.round(BigDecimal) RoundingMode.HALF_EVEN -> HALF_UP (DelphiRtl.java:32), scratch copy outside modernized/; ran OrdersTest, DelphiRtlTest, CitySumTest) made 1 more test(s) fail than the clean run (analysis/case1/equivalence/canary/java).",
+        "Source untouched: legacy/case1 is untouched: no file changed after the analysis started (5 files compared). Checked by modification time, and no version-control tool was run."
+      ],
+      "checks": [
+        {
+          "id": "tests",
+          "label": "Tests ran",
+          "state": "pass",
+          "detail": "27 test(s) executed, 0 failed, 0 skipped."
+        },
+        {
+          "id": "rules",
+          "label": "Rules traced",
+          "state": "pass",
+          "detail": "All 4 P0 rule(s) this module answers for are backed by a test that ran and passed."
+        },
+        {
+          "id": "same",
+          "label": "Same behavior",
+          "state": "pass",
+          "detail": "3 of 3 development case(s) executed: 3 same, 0 differ, 0 missing; comparator self-check passed."
+        },
+        {
+          "id": "fresh",
+          "label": "Fresh inputs",
+          "state": "pass",
+          "detail": "13 new input(s), 39 comparison(s), ran on the legacy and the new code with no difference."
+        },
+        {
+          "id": "canary",
+          "label": "Canary",
+          "state": "pass",
+          "detail": "1 canary run(s) shown by a result file or log; the first (DelphiRtl.round(BigDecimal) RoundingMode.HALF_EVEN -> HALF_UP (DelphiRtl.java:32), scratch copy outside modernized/; ran OrdersTest, DelphiRtlTest, CitySumTest) made 1 more test(s) fail than the clean run (analysis/case1/equivalence/canary/java)."
+        },
+        {
+          "id": "source",
+          "label": "Source untouched",
+          "state": "pass",
+          "detail": "legacy/case1 is untouched: no file changed after the analysis started (5 files compared). Checked by modification time, and no version-control tool was run."
+        }
+      ],
+      "evidence": {
+        "tests": {
+          "executed": 27,
+          "failed": 0,
+          "skipped": 0,
+          "skippedNoReason": 0,
+          "stale": false,
+          "suites": [
+            {
+              "name": "unit tests",
+              "command": "mvn -q -o -f modernized/case1/java/pom.xml clean test -Dmaven.test.failure.ignore=true (JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@8, target/ deleted first)",
+              "date": "",
+              "note": "",
+              "source": "result files",
+              "files": 6,
+              "written": "2026-10-11 11:46 UTC",
+              "executed": 27,
+              "failed": 0,
+              "skipped": 0
+            }
+          ]
+        },
+        "legacy": {
+          "ran": true,
+          "how": "Free Pascal 3.2.2 build of legacy/case1/LegacyEtl.pas (fpc -Mdelphi) into analysis/case1/build/legacy, run on a scratch copy of each case's legacy.db and cust_notes.txt via run_case.py",
+          "why": ""
+        },
+        "rules": {
+          "tied": true,
+          "counted": 9,
+          "outOfScope": 0,
+          "totals": {
+            "P0": {
+              "rules": 4,
+              "tested": 4,
+              "named, not run": 0,
+              "code only": 0,
+              "claimed only": 0,
+              "none": 0
+            },
+            "P1": {
+              "rules": 4,
+              "tested": 4,
+              "named, not run": 0,
+              "code only": 0,
+              "claimed only": 0,
+              "none": 0
+            },
+            "P2": {
+              "rules": 1,
+              "tested": 1,
+              "named, not run": 0,
+              "code only": 0,
+              "claimed only": 0,
+              "none": 0
+            }
+          },
+          "p0NoTests": [],
+          "namedNotRun": [],
+          "perTestResults": true,
+          "p0": [
+            {
+              "id": "RULE-001",
+              "name": "Notes attached to customers from the Big5 file",
+              "confidence": "High",
+              "status": "tested",
+              "main": 0,
+              "tests": 5,
+              "claimed": false,
+              "by": "test name",
+              "where": "modernized/case1/java/src/test/java/etl/units/CustomerTest.java:58"
+            },
+            {
+              "id": "RULE-002",
+              "name": "Zero-quantity orders are voided",
+              "confidence": "High",
+              "status": "tested",
+              "main": 0,
+              "tests": 2,
+              "claimed": false,
+              "by": "test name",
+              "where": "modernized/case1/java/src/test/java/etl/units/OrdersTest.java:42"
+            },
+            {
+              "id": "RULE-003",
+              "name": "Payable order amount",
+              "confidence": "High",
+              "status": "tested",
+              "main": 0,
+              "tests": 1,
+              "claimed": false,
+              "by": "test name",
+              "where": "modernized/case1/java/src/test/java/etl/units/OrdersTest.java:59"
+            },
+            {
+              "id": "RULE-007",
+              "name": "Order count and total per city",
+              "confidence": "High",
+              "status": "tested",
+              "main": 0,
+              "tests": 1,
+              "claimed": false,
+              "by": "test name",
+              "where": "modernized/case1/java/src/test/java/etl/units/CitySumTest.java:42"
+            }
+          ]
+        },
+        "equivalence": {
+          "cases": 3,
+          "executed": 3,
+          "same": 3,
+          "differs": 0,
+          "missing": 0,
+          "selfCheck": true,
+          "withinTolerance": 0,
+          "tolerances": [],
+          "approved": [],
+          "masks": [],
+          "differing": []
+        },
+        "leftOut": [
+          "No fresh input was refused by the legacy; all 13 (F01-F13) ran on both sides.",
+          "F04: all outputs are header-only (empty tables), so it does not count toward the 10 distinct non-empty inputs.",
+          "Outside the input domain (DECISIONS D-004), not tried: TDateTime outside 0..2958465, amounts where Qty*Price*100 overflows Currency, DISCOUNT_PCT outside 0..100, prices with more than 4 decimals, not\u2026"
+        ],
+        "fresh": {
+          "cases": 39,
+          "executed": 39,
+          "same": 39,
+          "differs": 0,
+          "missing": 0,
+          "selfCheck": true,
+          "withinTolerance": 0,
+          "tolerances": [],
+          "approved": [],
+          "masks": [],
+          "differing": [],
+          "reused": [],
+          "comparisons": 39,
+          "inputs": 13,
+          "needed": 10,
+          "leftOut": [
+            "No fresh input was refused by the legacy; all 13 (F01-F13) ran on both sides.",
+            "F04: all outputs are header-only (empty tables), so it does not count toward the 10 distinct non-empty inputs.",
+            "Outside the input domain (DECISIONS D-004), not tried: TDateTime outside 0..2958465, amounts where Qty*Price*100 overflows Currency, DISCOUNT_PCT outside 0..100, prices with more than 4 decimals, not\u2026"
+          ]
+        },
+        "canary": [
+          {
+            "change": "DelphiRtl.round(BigDecimal) RoundingMode.HALF_EVEN -> HALF_UP (DelphiRtl.java:32), scratch copy outside modernized/; ran OrdersTest, DelphiRtlTest, CitySumTest",
+            "testsFailed": 1,
+            "shown": true,
+            "where": [
+              "analysis/case1/equivalence/canary/java"
+            ]
+          }
+        ]
+      },
+      "caveats": [],
+      "needsPerson": [],
+      "brief": {
+        "found": false,
+        "phase": "",
+        "items": [],
+        "count": 0
+      },
+      "notProven": [
+        "It does not prove behavior on inputs nobody tried: the equivalence cases and the fresh inputs are samples, not the whole input space.",
+        "It does not cover speed, capacity, security, concurrency, or anything the tests and cases do not exercise.",
+        "It traces only the rules that were extracted: behavior nobody wrote down as a rule has no rule to trace.",
+        "A test that names a rule shows the rule is mentioned, not that the test is a good one. The canary shows only that some test can fail.",
+        "It does not replace the review and sign-off of the people who own the system."
+      ],
+      "verifiedAt": "2026-10-11 11:49 UTC"
+    }
+  ],
+  "toolingOnly": [],
+  "signoff": {
+    "name": "",
+    "role": "",
+    "date": "",
+    "decision": ""
+  },
+  "overall": {
+    "verdict": "PROVEN",
+    "counts": {
+      "PROVEN": 1,
+      "PARTLY PROVEN": 0,
+      "NOT PROVEN": 0
+    }
+  }
+}

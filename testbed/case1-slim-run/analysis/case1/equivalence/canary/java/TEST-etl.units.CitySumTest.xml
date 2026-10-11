@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="etl.units.CitySumTest" time="0.005" tests="3" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="jansi.mode" value="force"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="sun.boot.library.path" value="/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/amd64"/>
+    <property name="java.vm.version" value="25.504-b01"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="maven.multiModuleProjectDirectory" value="/tmp/claude-1000/-tmp-claude-1000--mnt-a0df7f69-337a-4cb4-a10a-f48243e3ddfc-Code-CodeMigration2-ef7f9c1b-0600-4386-8caa-a102b43a32a7-scratchpad-case1-slim/b59c3c2f-0bb1-45d3-9974-d544fb213f4c/scratchpad/canary-java"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="path.separator" value=":"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="unknown"/>
+    <property name="test" value="OrdersTest,DelphiRtlTest,CitySumTest"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="/tmp/claude-1000/-mnt-a0df7f69-337a-4cb4-a10a-f48243e3ddfc-Code-CodeMigration2/ef7f9c1b-0600-4386-8caa-a102b43a32a7/scratchpad/case1-slim"/>
+    <property name="java.runtime.version" value="1.8.0_504-b01"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/endorsed"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="os.name" value="Linux"/>
+    <property name="guice_custom_class_loading" value="CHILD"/>
+    <property name="classworlds.conf" value="/usr/share/maven/bin/m2.conf"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="maven.conf" value="/usr/share/maven/conf"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="52.0"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="maven.test.failure.ignore" value="true"/>
+    <property name="os.version" value="7.0.0-38-generic"/>
+    <property name="library.jansi.path" value="/usr/share/maven/lib/jansi-native"/>
+    <property name="user.home" value="/home/comet"/>
+    <property name="user.timezone" value="Asia/Taipei"/>
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
+    <property name="java.specification.version" value="1.8"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="user.name" value="comet"/>
+    <property name="java.class.path" value="/usr/share/maven/boot/plexus-classworlds-2.x.jar"/>
+    <property name="org.slf4j.simpleLogger.defaultLogLevel" value="error"/>
+    <property name="java.vm.specification.version" value="1.8"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.home" value="/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -q -o -f /tmp/claude-1000/-tmp-claude-1000--mnt-a0df7f69-337a-4cb4-a10a-f48243e3ddfc-Code-CodeMigration2-ef7f9c1b-0600-4386-8caa-a102b43a32a7-scratchpad-case1-slim/b59c3c2f-0bb1-45d3-9974-d544fb213f4c/scratchpad/canary-java/pom.xml clean test -Dtest=OrdersTest,DelphiRtlTest,CitySumTest -Dmaven.test.failure.ignore=true"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="1.8.0_504"/>
+    <property name="java.ext.dirs" value="/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/ext:/usr/java/packages/lib/ext"/>
+    <property name="sun.boot.class.path" value="/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/resources.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/rt.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/sunrsasign.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/jsse.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/jce.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/charsets.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/lib/jfr.jar:/home/linuxbrew/.linuxbrew/Cellar/openjdk@8/1.8.0-504/libexec/jre/classes"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.specification.maintenance.version" value="6"/>
+    <property name="maven.home" value="/usr/share/maven"/>
+    <property name="file.separator" value="/"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="gnome"/>
+    <property name="sun.cpu.isalist" value=""/>
+  </properties>
+  <testcase name="rule007_countAndCurrencyTotalPerCityInLegacySortOrder" classname="etl.units.CitySumTest" time="0.003"/>
+  <testcase name="rule009_totalWrittenWithTwoDecimals" classname="etl.units.CitySumTest" time="0.001"/>
+  <testcase name="rule008_missingCustomerOrEmptyCityIsUnknown" classname="etl.units.CitySumTest" time="0.001"/>
+</testsuite>

@@ -1,0 +1,9 @@
+   1crlf one            
+
+abc
+   
+ABCDletters id          
+  2 two                 
+   3¤T¸¹«È¤á            
+  -4minus               
+   4last no eol         

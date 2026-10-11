@@ -1,0 +1,92 @@
+{
+  "system": "",
+  "generated": "2026-10-11T11:46:47Z",
+  "legacy": {
+    "label": "legacy",
+    "command": ""
+  },
+  "new": {
+    "label": "new",
+    "command": ""
+  },
+  "selfCheck": {
+    "passed": true,
+    "detail": "each legacy output was compared with a copy changed by one byte and reported as different"
+  },
+  "totals": {
+    "cases": 3,
+    "executed": 3,
+    "same": 3,
+    "differs": 0,
+    "differsApproved": 0,
+    "missing": 0
+  },
+  "cases": [
+    {
+      "id": "C01-T_CUST_CLEAN",
+      "title": "ETL-001 T_CUST_CLEAN on input C01",
+      "verdict": "same",
+      "reason": "Identical, 4990 bytes.",
+      "legacyPath": "equivalence/legacy/C01/T_CUST_CLEAN.csv",
+      "newPath": "equivalence/new/C01/T_CUST_CLEAN.csv",
+      "legacySha256": "fa24cea2f1f744608c851d2303f49b46a0b9ec54da3887eb126f96d17cfc1ddc",
+      "newSha256": "fa24cea2f1f744608c851d2303f49b46a0b9ec54da3887eb126f96d17cfc1ddc",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 4990,
+        "new": 4990
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "C01-T_ORDER_AMT",
+      "title": "ETL-002 T_ORDER_AMT on input C01",
+      "verdict": "same",
+      "reason": "Identical, 10553 bytes.",
+      "legacyPath": "equivalence/legacy/C01/T_ORDER_AMT.csv",
+      "newPath": "equivalence/new/C01/T_ORDER_AMT.csv",
+      "legacySha256": "784f82969c5770649ddc00d2cd12b46148c5fa506e6e97875e8de0859db1c11a",
+      "newSha256": "784f82969c5770649ddc00d2cd12b46148c5fa506e6e97875e8de0859db1c11a",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 10553,
+        "new": 10553
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    },
+    {
+      "id": "C01-T_CITY_SUM",
+      "title": "ETL-003 T_CITY_SUM on input C01",
+      "verdict": "same",
+      "reason": "Identical, 221 bytes.",
+      "legacyPath": "equivalence/legacy/C01/T_CITY_SUM.csv",
+      "newPath": "equivalence/new/C01/T_CITY_SUM.csv",
+      "legacySha256": "8f3249d9b692a25ff6748e3764c1671c5d0fa1d4bcfc042f40349b70c0900cf6",
+      "newSha256": "8f3249d9b692a25ff6748e3764c1671c5d0fa1d4bcfc042f40349b70c0900cf6",
+      "masked": [],
+      "approvedDifference": "",
+      "note": "",
+      "bytes": {
+        "legacy": 221,
+        "new": 221
+      },
+      "maskedBytes": {
+        "legacy": 0,
+        "new": 0
+      },
+      "empty": false
+    }
+  ]
+}

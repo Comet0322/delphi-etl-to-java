@@ -1,0 +1,152 @@
+{
+ "etl": "ETL-001",
+ "ops": [
+  {
+   "op_id": "OP-01",
+   "source_loc": "uCustomer.pas:24-29,uCustomer.pas:52",
+   "does": "Open the notes file and read it line by line as bytes (ReadLn into RawByteString)",
+   "writes": [],
+   "reads": [],
+   "capability": "file.read.text",
+   "implicit": [
+    "notes file is bytes, not text; a last line without newline is still read; CRLF ends are stripped by ReadLn"
+   ],
+   "rules": [
+    "RULE-001"
+   ]
+  },
+  {
+   "op_id": "OP-02",
+   "source_loc": "uCustomer.pas:30",
+   "does": "Skip lines shorter than 5 bytes",
+   "writes": [],
+   "reads": [],
+   "implicit": [
+    "Length counts bytes (rule.md §4/§5), not characters"
+   ],
+   "rules": [
+    "RULE-001"
+   ]
+  },
+  {
+   "op_id": "OP-03",
+   "source_loc": "uCustomer.pas:31",
+   "does": "Customer id = StrToIntDef(Trim(bytes 1-4), 0)",
+   "writes": [],
+   "reads": [],
+   "implicit": [
+    "StrToIntDef gives 0 on any parse failure, so a bad id maps to key '0'",
+    "Trim strips chars <= #32 only"
+   ],
+   "rules": [
+    "RULE-001"
+   ]
+  },
+  {
+   "op_id": "OP-04",
+   "source_loc": "uCustomer.pas:32-34",
+   "does": "Take bytes 5-24 of the line as the note and convert Big5 (CP950) to UTF-8",
+   "writes": [],
+   "reads": [],
+   "implicit": [
+    "Copy on bytes may cut a double-byte character; the cut half becomes '?' (MS950 decoder REPLACE with '?')",
+    "Copy clamps out-of-range count, never throws",
+    "DefaultSystemCodePage := CP_UTF8 (LegacyEtl.pas:39) makes SetCodePage(Note, CP_UTF8, True) yield UTF-8 and string field values UTF-8; Java strings are Unicode, nothing to port (rule.md §6)"
+   ],
+   "rules": [
+    "RULE-001"
+   ]
+  },
+  {
+   "op_id": "OP-05",
+   "source_loc": "uCustomer.pas:35",
+   "does": "Store TrimRight(note) in Notes under key IntToStr(id); later lines for the same id overwrite",
+   "writes": [],
+   "reads": [],
+   "implicit": [
+    "TStringList.Values[k] := '' DELETES the entry k (also an earlier one for the same id), it does not store an empty string",
+    "TrimRight strips chars <= #32 only, after decoding"
+   ],
+   "rules": [
+    "RULE-001"
+   ]
+  },
+  {
+   "op_id": "OP-06",
+   "source_loc": "uCustomer.pas:53-54",
+   "does": "Drop and create T_CUST_CLEAN (CUST_ID INTEGER, NAME TEXT, CITY TEXT, JOIN_DATE TEXT, NOTE TEXT)",
+   "writes": [
+    "T_CUST_CLEAN"
+   ],
+   "reads": [],
+   "capability": "db.exec",
+   "implicit": [
+    "output table name through Tables.out, including DDL; column types fixed by the DDL"
+   ],
+   "rules": []
+  },
+  {
+   "op_id": "OP-07",
+   "source_loc": "uCustomer.pas:55,uCustomer.pas:58-62",
+   "does": "Read CUSTOMER ordered by CUST_ID; Name = Trim(NAME); City = UpperCase(Trim(CITY)); Id = CUST_ID",
+   "writes": [
+    "T_CUST_CLEAN.CUST_ID",
+    "T_CUST_CLEAN.NAME",
+    "T_CUST_CLEAN.CITY"
+   ],
+   "reads": [
+    "CUSTOMER.CUST_ID",
+    "CUSTOMER.NAME",
+    "CUSTOMER.CITY"
+   ],
+   "capability": "db.query",
+   "implicit": [
+    "AsString of NULL is ''",
+    "AsInteger of NULL is 0",
+    "UpperCase is ASCII only",
+    "Trim strips chars <= #32 only",
+    "ORDER BY CUST_ID"
+   ],
+   "rules": [
+    "RULE-005"
+   ]
+  },
+  {
+   "op_id": "OP-08",
+   "source_loc": "uCustomer.pas:63-67",
+   "does": "JOIN_DATE as float; 0 (or NULL) gives '' else yyyymmdd text",
+   "writes": [
+    "T_CUST_CLEAN.JOIN_DATE"
+   ],
+   "reads": [
+    "CUSTOMER.JOIN_DATE"
+   ],
+   "implicit": [
+    "AsFloat of NULL is 0 so NULL gives ''",
+    "TDateTime days since 1899-12-30; 1900-01-01 is a real date, only 0 is the sentinel",
+    "FormatDateTime('yyyymmdd') zero-padded"
+   ],
+   "rules": [
+    "RULE-006"
+   ]
+  },
+  {
+   "op_id": "OP-09",
+   "source_loc": "uCustomer.pas:56,uCustomer.pas:68-75",
+   "does": "Insert the cleaned row with the note looked up by IntToStr(id)",
+   "writes": [
+    "T_CUST_CLEAN.CUST_ID",
+    "T_CUST_CLEAN.NOTE"
+   ],
+   "reads": [],
+   "capability": "db.write",
+   "implicit": [
+    "Values[...] of a missing key is '' (stored as '' text, not NULL)",
+    "notes were loaded before CUSTOMER is read"
+   ],
+   "rules": [
+    "RULE-001"
+   ]
+  }
+ ]
+}

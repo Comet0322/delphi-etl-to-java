@@ -1,0 +1,84 @@
+{
+ "findings": [
+  {
+   "severity": "high",
+   "kind": "wrong rule link",
+   "where": "uOrders.pas:48-51",
+   "artifact": "inventory/ETL-002.json",
+   "issue": "OP-03 (Qty*Price minus discount, the central calculation) lists rules [RULE-001], which is the Big5 notes rule of ETL-001. RULE-003 (P0, uOrders.pas:48-55) is linked to no op, so the P0 rule has no operation and tests named after RULE-003 cannot be traced.",
+   "fix": "OP-03 rules -> [\"RULE-003\"]."
+  },
+  {
+   "severity": "high",
+   "kind": "wrong rule link",
+   "where": "uOrders.pas:15-26,55",
+   "artifact": "inventory/ETL-002.json",
+   "issue": "OP-05 (CentsToStr(Round(Amt*100)) text) lists rules [RULE-001] (notes file); it implements the two-decimal text part of RULE-003.",
+   "fix": "OP-05 rules -> [\"RULE-003\"]."
+  },
+  {
+   "severity": "high",
+   "kind": "wrong rule link",
+   "where": "uOrders.pas:52",
+   "artifact": "inventory/ETL-002.json",
+   "issue": "OP-04 (status S/N, discount > 10) lists [RULE-003]; the status rule is RULE-004. RULE-004 is linked to no op.",
+   "fix": "OP-04 rules -> [\"RULE-004\"]."
+  },
+  {
+   "severity": "low",
+   "kind": "missing implicit",
+   "where": "uOrders.pas:51",
+   "artifact": "inventory/ETL-002.json",
+   "issue": "OP-03 implicit says scale 4 HALF_EVEN after every operation but not that Amt*Disc/100 mixes Currency with Integer and the '/' operator: rule.md §4 makes '/' a double division while the legacy statement is assigned to a Currency. Whether FPC divides as Currency (truncating or rounding at 4 decimals) or as float then converts decides the 4th decimal, which Round(Amt*100) can expose on ties.",
+   "fix": "Add to OP-03 implicit: 'Amt*Disc/100 is Currency*Integer then / 100 assigned to Currency; keep the intermediate at scale 4 in the order (Amt*Disc) then /100; confirm rounding mode of the division by the dual run'."
+  },
+  {
+   "severity": "low",
+   "kind": "missing implicit",
+   "where": "uCitySum.pas:44-45,52",
+   "artifact": "inventory/ETL-003.json",
+   "issue": "OP-02 names case-insensitive comparison but not (a) which spelling is kept as the stored key when two spellings merge (the first one seen, in T_ORDER_AMT order) nor (b) that the sort order is the TStringList compare, not Java natural order. C01 has non-ASCII cities ('ZüRICH', '台南') and UpperCase is ASCII only, so 'zürich'/'ZÜRICH' would merge under AnsiCompareText. OP-04 implicit 'city order of the sorted list' is not actionable.",
+   "fix": "Add to OP-02/OP-04 implicit: 'first-seen spelling is the key; order = case-insensitive compare of the cleaned city (observed C01: (UNKNOWN), ASCII, ZüRICH, then CJK, i.e. code point order); a TreeMap with String.CASE_INSENSITIVE_ORDER differs for non-ASCII'."
+  },
+  {
+   "severity": "low",
+   "kind": "missing work",
+   "where": "LegacyEtl.pas:24",
+   "artifact": "MAPPING.json",
+   "issue": "GSkipVoid := True in FormCreate is in no op and not in MAPPING driver; ETL-002 OP-02 only mentions it in implicit.",
+   "fix": "Add 'LegacyEtl.pas:24 GSkipVoid := True' to driver notes in MAPPING.json (BatchRun sets Common.gSkipVoid = true before Orders.runOrderAmount)."
+  },
+  {
+   "severity": "low",
+   "kind": "missing work",
+   "where": "LegacyEtl.pas:39",
+   "artifact": "MAPPING.json",
+   "issue": "DefaultSystemCodePage := CP_UTF8 is in no op and no mapping; it decides that SetCodePage(Note, CP_UTF8, True) in uCustomer.pas:34 gives UTF-8 and that string field values are UTF-8.",
+   "fix": "Record it in driver description and ETL-001 OP-04 implicit (charset rule.md §6, Java strings are Unicode, nothing to port)."
+  },
+  {
+   "severity": "low",
+   "kind": "wrong classification",
+   "where": "uCommon.pas:11",
+   "artifact": "MAPPING.json",
+   "issue": "GTrans (a transaction holder) is mapped to capability db.transaction (action keep, Db.current().inTransaction); rule.md §2 says a global that only holds a connection or transaction disappears.",
+   "fix": "Map GTrans to db.commit/db.disconnect as 'disappears' with no Java target."
+  },
+  {
+   "severity": "low",
+   "kind": "imprecise source_loc",
+   "where": "uCustomer.pas:55-62",
+   "artifact": "inventory/ETL-001.json",
+   "issue": "OP-07 and OP-09 both list writes T_CUST_CLEAN.CUST_ID/NAME/CITY, so trace_diff cannot tell the computing op (OP-07) from the writing op (OP-09); OP-09 reads [] although it reads the notes map. Also the notes-map call at uCustomer.pas:52 and RunCitySum/RunOrderAmount call order are in no op.",
+   "fix": "Keep NAME/CITY writes on OP-07 only, or make OP-09 writes only NOTE plus the ID; add 'uCustomer.pas:52' to OP-01 source_loc."
+  },
+  {
+   "severity": "low",
+   "kind": "imprecise source_loc",
+   "where": "uOrders.pas:15-26",
+   "artifact": "BUSINESS_RULES.md",
+   "issue": "RULE-003 (P0) Source uOrders.pas:48-55 does not include CentsToStr (uOrders.pas:15-26), which implements the 'two decimals text, negative sign' part of the rule.",
+   "fix": "Source: uOrders.pas:15-26,48-55."
+  }
+ ]
+}

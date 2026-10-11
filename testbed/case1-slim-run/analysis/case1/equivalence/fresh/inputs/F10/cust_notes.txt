@@ -1,0 +1,6 @@
+   1  leading           
+   2trailing            
+   3                    
+   4                    
+5   id left aligned     
+ 6  id centred          

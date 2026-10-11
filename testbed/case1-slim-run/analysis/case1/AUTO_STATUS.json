@@ -1,0 +1,136 @@
+{
+ "system": "case1",
+ "stage": "done",
+ "stages_done": [
+  "analyze",
+  "transform",
+  "loop",
+  "closeout"
+ ],
+ "timing": {
+  "analyze": {
+   "start": "19:34",
+   "end": "19:40"
+  },
+  "transform": {
+   "start": "19:40",
+   "end": "19:47"
+  },
+  "verify": [
+   {
+    "start": "19:47",
+    "end": "19:52"
+   }
+  ]
+ },
+ "checks": {
+  "analyze": "PASS",
+  "transform": "PASS",
+  "verify": "PASS"
+ },
+ "limits": {
+  "same_diffs": 3,
+  "no_progress": 4,
+  "max_attempts": 8,
+  "verify": 3
+ },
+ "etls": {
+  "ETL-001": {
+   "stage": "built",
+   "note": "C01 same on every table; tests green"
+  },
+  "ETL-002": {
+   "stage": "built",
+   "note": "C01 same on every table; tests green"
+  },
+  "ETL-003": {
+   "stage": "built",
+   "note": "C01 same on every table; tests green"
+  }
+ },
+ "gate": {
+  "frozen": {
+   "RUN.json": "337e4a230cc03b0a63b6acbc8999f5d18da3f7b630d3092ae84650300fdafa18",
+   "cases.json:C01-T_CUST_CLEAN": "54fba045292668ec39bdf83aa44f00881aca85933b516ae1dd1f8edcc19b64ec",
+   "cases.json:C01-T_ORDER_AMT": "8631b127cf3747698c1795d68df016c2442ffae60e5c95dd08616271fb8a442c",
+   "cases.json:C01-T_CITY_SUM": "ba18eeaf3947507f3ce9959412e3f7e76b1d6984068530092fbb5f1309d8b788",
+   "fresh-cases.json:F01-T_CUST_CLEAN": "45c4ef3541eb8cffe7968690814b1160fc641c56a6f46b87ce4d45d0f303e890",
+   "fresh-cases.json:F01-T_ORDER_AMT": "ebb5ee4a28fe5066ca9daf25107eb376450d54d4089154c50b3423db0ca62ec2",
+   "fresh-cases.json:F01-T_CITY_SUM": "83d9706efce3c4f247202f1b832dfc1c28766047557315ce378fe50f9986993b",
+   "fresh-cases.json:F02-T_CUST_CLEAN": "dad043853c351cd4c0849cb090528d278c633b32621afbb841dfde46c5f17189",
+   "fresh-cases.json:F02-T_ORDER_AMT": "51d4a96b8db2f08481459f26a7f8f23d38743774b2df6daf4d1ef2fbf0ec13a3",
+   "fresh-cases.json:F02-T_CITY_SUM": "304560ae6b434ffd5b6aa85df923a7e9355f80d719351d425c1b6da20ad67447",
+   "fresh-cases.json:F03-T_CUST_CLEAN": "dad043853c351cd4c0849cb090528d278c633b32621afbb841dfde46c5f17189",
+   "fresh-cases.json:F03-T_ORDER_AMT": "4531dc73f545748b97f93ba81e3866a689cebf64368a4215bd088a75d4356a9a",
+   "fresh-cases.json:F03-T_CITY_SUM": "9028433fe0772c6b88f6c9721ac5c5d14d2b6d1e75aa38762c6a7e243cb326ef",
+   "fresh-cases.json:F04-T_CUST_CLEAN": "f8ec488af42829fbf8a20afe6ec93780e41be97ed5e119c6dbc4739f30e2287e",
+   "fresh-cases.json:F04-T_ORDER_AMT": "9e69d06ec008fae92eddb5b2112be365484833c703f38679816afcf47e0a4884",
+   "fresh-cases.json:F04-T_CITY_SUM": "85abad1c76ed6857a50180cf9d4888c9161295233e5867a69d2c22aa098d5c6d",
+   "fresh-cases.json:F05-T_CUST_CLEAN": "0da95be473596d2014c1aef7d73e4b16e247bbc19fa84ba1537211a88f73c7b2",
+   "fresh-cases.json:F05-T_ORDER_AMT": "19fb43390c9bd133736fc310d3272a20b5d4cbcbc3982919c673191d72c31140",
+   "fresh-cases.json:F05-T_CITY_SUM": "c24aa9d9b0312590f56611299746de0f5b9e2a751619325e731a2ed451422a5a",
+   "fresh-cases.json:F06-T_CUST_CLEAN": "9182dd0bdbb01257925c23a743a7997d746d00d970d7a4de271a23d1ddb5bc86",
+   "fresh-cases.json:F06-T_ORDER_AMT": "40294c1bc8c29dc3a8a8dec1b92d87a8b2ad1e3d213c8bc113223ff7879ed23c",
+   "fresh-cases.json:F06-T_CITY_SUM": "55a238011dc4a0b1af13b90eda5c89f0343c4c89f257d731fc86d206639ec0fd",
+   "fresh-cases.json:F07-T_CUST_CLEAN": "1cde757a8d8360548e0c985274d4b0296783821dcd6eeeecb42b27ab1c7e627a",
+   "fresh-cases.json:F07-T_ORDER_AMT": "bf88103c5558a8a984053d144bedb14b228234e109c211b49b243207dd63e74e",
+   "fresh-cases.json:F07-T_CITY_SUM": "c2b2979799e09f513ae44a1a800c621817b2956f4c666cef179a0f75471a1eae",
+   "fresh-cases.json:F08-T_CUST_CLEAN": "f1f210befb143aba17d774c0135cca2d531c2f56569fad85a819571f129c6cd3",
+   "fresh-cases.json:F08-T_ORDER_AMT": "55b74f03e429ed68366ad0488ceae38e14b0cfa3da4fbe05e048b2f606652d36",
+   "fresh-cases.json:F08-T_CITY_SUM": "12c3508d1ab59415b76be8f9cfb30706b7aefa951e2a3e94338c734e962cfd28",
+   "fresh-cases.json:F09-T_CUST_CLEAN": "efb4e29c17d89d07612d7eb9ce077d093d4ef5da77078ae0f0e2b46b559fd559",
+   "fresh-cases.json:F09-T_ORDER_AMT": "b17e3872ca5afa1953876a5e3d367e2b4c25e420c7b9d33ba899bf0d7acdcdb6",
+   "fresh-cases.json:F09-T_CITY_SUM": "606a329bbd5b13c31cc6b96c00c62ea58043b1f25a874fc0190ea2e85375d31d",
+   "fresh-cases.json:F10-T_CUST_CLEAN": "f456370ea5c7affd0608849824cfc61f794c5f794a66950716dfd6fc662a6a2e",
+   "fresh-cases.json:F10-T_ORDER_AMT": "b4f405c227c800255fadb1bec2ba62c355e4816ef4ffb674de4e5f737ed9ff0f",
+   "fresh-cases.json:F10-T_CITY_SUM": "ba45c4fb79d67a02bff923c8b4c0885ce67e8526b00c3a27f9b03db645942a59",
+   "fresh-cases.json:F11-T_CUST_CLEAN": "4eafda81eaf59fe4643fbf402e4d31399e336142be9fb34b1e289f660f14abb3",
+   "fresh-cases.json:F11-T_ORDER_AMT": "19fb43390c9bd133736fc310d3272a20b5d4cbcbc3982919c673191d72c31140",
+   "fresh-cases.json:F11-T_CITY_SUM": "bebf1d741ad91cb91f9e801097bd7a41f56cc4b3b250583f6e98881420abf1dc",
+   "fresh-cases.json:F12-T_CUST_CLEAN": "a1fb786a4b1a6174076485ab19c3ee0656352801fbf1122af6760c8db9269b39",
+   "fresh-cases.json:F12-T_ORDER_AMT": "19fb43390c9bd133736fc310d3272a20b5d4cbcbc3982919c673191d72c31140",
+   "fresh-cases.json:F12-T_CITY_SUM": "c24aa9d9b0312590f56611299746de0f5b9e2a751619325e731a2ed451422a5a",
+   "fresh-cases.json:F13-T_CUST_CLEAN": "b48a027ec9f960cef64a9677af70d1a15f987f88855e0ad4ab2ee67c3ed8880e",
+   "fresh-cases.json:F13-T_ORDER_AMT": "0da070bc087d6b746a9702e1b5ad0eb711ebfc6584a3172b3ce7609e1df00893",
+   "fresh-cases.json:F13-T_CITY_SUM": "312158a87971d53dbcf7c897dc397b633093fc595a05f8f4c58c9ffb3d770648"
+  },
+  "etls": {
+   "ETL-001": {
+    "runs": 0,
+    "counts": [],
+    "fingerprints": [],
+    "state": "EQUIVALENT",
+    "diffs": 0,
+    "sample": []
+   },
+   "ETL-002": {
+    "runs": 0,
+    "counts": [],
+    "fingerprints": [],
+    "state": "EQUIVALENT",
+    "diffs": 0,
+    "sample": []
+   },
+   "ETL-003": {
+    "runs": 0,
+    "counts": [],
+    "fingerprints": [],
+    "state": "EQUIVALENT",
+    "diffs": 0,
+    "sample": []
+   }
+  },
+  "verify": {
+   "runs": 1,
+   "verdicts": [
+    "PROVEN"
+   ],
+   "seen": [
+    "3c8c5ad711db42b8"
+   ]
+  },
+  "overall": "DONE",
+  "problems": [],
+  "unmappedCases": []
+ }
+}

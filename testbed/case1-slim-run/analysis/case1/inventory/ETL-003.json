@@ -1,0 +1,80 @@
+{
+ "etl": "ETL-003",
+ "ops": [
+  {
+   "op_id": "OP-01",
+   "source_loc": "uCitySum.pas:32-42",
+   "does": "Build map customer id -> city from T_CUST_CLEAN (this run's output)",
+   "writes": [],
+   "reads": [
+    "T_CUST_CLEAN.CUST_ID",
+    "T_CUST_CLEAN.CITY"
+   ],
+   "capability": "db.query",
+   "implicit": [
+    "Values[k] := '' deletes the key, so a customer with empty city is simply absent",
+    "table read as Tables.out(T_CUST_CLEAN), no ORDER BY: later duplicate id overwrites"
+   ],
+   "rules": [
+    "RULE-008"
+   ]
+  },
+  {
+   "op_id": "OP-02",
+   "source_loc": "uCitySum.pas:44-64",
+   "does": "For every T_ORDER_AMT row: city lookup, '(UNKNOWN)' when empty, count+1, total += StrToCurr(AMOUNT)",
+   "writes": [],
+   "reads": [
+    "T_ORDER_AMT.CUST_ID",
+    "T_ORDER_AMT.AMOUNT",
+    "T_CUST_CLEAN.CITY"
+   ],
+   "capability": "db.query",
+   "implicit": [
+    "Acc is a sorted TStringList (FPC CaseSensitive default False: IndexOf/duplicates compare case-insensitively) with dupIgnore",
+    "Currency sum, scale 4 HALF_EVEN",
+    "StrToCurr parses the '.' decimal text written by ETL-002",
+    "missing parent customer gives '(UNKNOWN)'",
+    "T_ORDER_AMT read with Tables.out",
+    "first-seen spelling (in T_ORDER_AMT order) is the stored key when two spellings merge; order = case-insensitive compare of the cleaned city (observed C01: (UNKNOWN), ASCII, ZüRICH, then CJK, i.e. code point order); a TreeMap with String.CASE_INSENSITIVE_ORDER differs for non-ASCII"
+   ],
+   "rules": [
+    "RULE-007",
+    "RULE-008"
+   ]
+  },
+  {
+   "op_id": "OP-03",
+   "source_loc": "uCitySum.pas:66-67",
+   "does": "Drop and create T_CITY_SUM (CITY TEXT, ORDER_CNT INTEGER, TOTAL TEXT)",
+   "writes": [
+    "T_CITY_SUM"
+   ],
+   "reads": [],
+   "capability": "db.exec",
+   "implicit": [
+    "output table through Tables.out, including DDL"
+   ],
+   "rules": []
+  },
+  {
+   "op_id": "OP-04",
+   "source_loc": "uCitySum.pas:68-78",
+   "does": "Insert one row per city in sorted order: city, count, CurrToStrF(total, ffFixed, 2)",
+   "writes": [
+    "T_CITY_SUM.CITY",
+    "T_CITY_SUM.ORDER_CNT",
+    "T_CITY_SUM.TOTAL"
+   ],
+   "reads": [],
+   "capability": "db.write",
+   "implicit": [
+    "ffFixed 2 rounds the Currency to 2 decimals (half away from zero on the 4-decimal value), no thousand separator",
+    "city order = the sorted TStringList order (case-insensitive compare, see OP-02)"
+   ],
+   "rules": [
+    "RULE-009"
+   ]
+  }
+ ]
+}

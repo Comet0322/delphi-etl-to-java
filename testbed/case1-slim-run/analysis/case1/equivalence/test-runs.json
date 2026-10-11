@@ -1,0 +1,13 @@
+{ "date": "2026-10-11",
+  "legacy": { "ran": true, "how": "Free Pascal 3.2.2 build of legacy/case1/LegacyEtl.pas (fpc -Mdelphi) into analysis/case1/build/legacy, run on a scratch copy of each case's legacy.db and cust_notes.txt via run_case.py", "why": "" },
+  "leftOut": [
+    "No fresh input was refused by the legacy; all 13 (F01-F13) ran on both sides.",
+    "F04: all outputs are header-only (empty tables), so it does not count toward the 10 distinct non-empty inputs.",
+    "Outside the input domain (DECISIONS D-004), not tried: TDateTime outside 0..2958465, amounts where Qty*Price*100 overflows Currency, DISCOUNT_PCT outside 0..100, prices with more than 4 decimals, notes bytes that are not valid Big5."
+  ],
+  "suites": [ { "module": "java", "name": "unit tests",
+                "command": "mvn -q -o -f modernized/case1/java/pom.xml clean test -Dmaven.test.failure.ignore=true (JAVA_HOME=/home/linuxbrew/.linuxbrew/opt/openjdk@8, target/ deleted first)",
+                "junit": ["modernized/case1/java/target/surefire-reports"],
+                "log": ["analysis/case1/equivalence/java.test-output.txt"], "skippedReason": "", "note": "" } ],
+  "canaries": [ { "module": "java", "change": "DelphiRtl.round(BigDecimal) RoundingMode.HALF_EVEN -> HALF_UP (DelphiRtl.java:32), scratch copy outside modernized/; ran OrdersTest, DelphiRtlTest, CitySumTest",
+                 "junit": ["analysis/case1/equivalence/canary/java"], "log": ["analysis/case1/equivalence/canary/java/canary.test-output.txt"] } ] }

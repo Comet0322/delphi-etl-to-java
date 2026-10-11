@@ -1,0 +1,7 @@
+"CUST_ID","NAME","CITY","JOIN_DATE","NOTE"
+1,"lead","TAIPEI","20200618","  leading"
+2,"trail","TAINAN","20200618","trailing"
+3,"","","20200618",""
+4,"both","HSINCHU","20200618",""
+5," nbsp "," TAIPEI","20200618","id left aligned"
+6,"黃","台南","20200618","id centred"

@@ -1,0 +1,5 @@
+"CUST_ID","NAME","CITY","JOIN_DATE","NOTE"
+1,"Alice","TAIPEI","20200618","crlf one"
+2,"Bob","TAINAN","20090706","two"
+3,"黃美玲","台南","20141227","三號客戶"
+4,"Four","TAICHUNG","20200618","last no eol"

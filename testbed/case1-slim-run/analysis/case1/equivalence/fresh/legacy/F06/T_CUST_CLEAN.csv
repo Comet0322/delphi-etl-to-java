@@ -1,0 +1,6 @@
+"CUST_ID","NAME","CITY","JOIN_DATE","NOTE"
+1,"First","TAIPEI","20200618","second"
+1,"Second","TAINAN","20200619","second"
+2,"Two","HSINCHU","20200620",""
+2,"TwoB","HSINCHU","20200621",""
+3,"Three","TAICHUNG","20200622","three last"

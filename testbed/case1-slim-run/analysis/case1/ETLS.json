@@ -1,0 +1,11 @@
+{"etls": [
+ {"id": "ETL-001", "name": "Customer clean with Big5 notes", "entry": "uCustomer.RunCustomerClean", "files": ["uCustomer.pas"],
+  "inputs": {"tables": ["CUSTOMER"], "files": ["cust_notes.txt (Big5 notes file, ParamStr(2))"]},
+  "outputs": {"tables": [{"name": "T_CUST_CLEAN", "key": ["CUST_ID"]}]}, "depends_on": []},
+ {"id": "ETL-002", "name": "Order payable amount", "entry": "uOrders.RunOrderAmount", "files": ["uOrders.pas"],
+  "inputs": {"tables": ["ORDERS"], "files": []},
+  "outputs": {"tables": [{"name": "T_ORDER_AMT", "key": ["ORDER_ID"]}]}, "depends_on": []},
+ {"id": "ETL-003", "name": "Order count and total per customer city", "entry": "uCitySum.RunCitySum", "files": ["uCitySum.pas"],
+  "inputs": {"tables": ["T_CUST_CLEAN", "T_ORDER_AMT"], "files": []},
+  "outputs": {"tables": [{"name": "T_CITY_SUM", "key": ["CITY"]}]}, "depends_on": ["ETL-001", "ETL-002"]}
+]}

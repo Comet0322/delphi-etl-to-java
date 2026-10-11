@@ -1,0 +1,172 @@
+{
+ "units": [
+  {
+   "unit": "uCommon",
+   "file": "uCommon.pas",
+   "class": "etl.units.Common",
+   "routines": [],
+   "globals": [
+    {
+     "legacy": "GSkipVoid",
+     "java": "gSkipVoid"
+    }
+   ],
+   "types": [],
+   "replaced": [
+    {
+     "legacy": "OpenDb",
+     "capability": "db.connect",
+     "target": "Db.open(props)"
+    },
+    {
+     "legacy": "CloseDb",
+     "capability": "db.commit",
+     "target": "Db.commit()"
+    },
+    {
+     "legacy": "ExecSql",
+     "capability": "db.exec",
+     "target": "Db.current().execute(sql)"
+    },
+    {
+     "legacy": "NewQuery",
+     "capability": "db.query",
+     "target": "Db.current().query(sql, params...) / insertBatch"
+    },
+    {
+     "legacy": "GConn",
+     "capability": "db.connect",
+     "target": "Db.current()"
+    },
+    {
+     "legacy": "GTrans",
+     "capability": "db.commit",
+     "target": "disappears: holds only the transaction; commit via Db.commit(), no Java field"
+    }
+   ]
+  },
+  {
+   "unit": "uCustomer",
+   "file": "uCustomer.pas",
+   "class": "etl.units.Customer",
+   "routines": [
+    {
+     "legacy": "LoadNotes",
+     "java": "loadNotes",
+     "line": 18
+    },
+    {
+     "legacy": "RunCustomerClean",
+     "java": "runCustomerClean",
+     "line": 42
+    }
+   ],
+   "globals": [],
+   "types": [],
+   "replaced": []
+  },
+  {
+   "unit": "uOrders",
+   "file": "uOrders.pas",
+   "class": "etl.units.Orders",
+   "routines": [
+    {
+     "legacy": "CentsToStr",
+     "java": "centsToStr",
+     "line": 15
+    },
+    {
+     "legacy": "RunOrderAmount",
+     "java": "runOrderAmount",
+     "line": 28
+    }
+   ],
+   "globals": [],
+   "types": [],
+   "replaced": []
+  },
+  {
+   "unit": "uCitySum",
+   "file": "uCitySum.pas",
+   "class": "etl.units.CitySum",
+   "routines": [
+    {
+     "legacy": "RunCitySum",
+     "java": "runCitySum",
+     "line": 22
+    }
+   ],
+   "globals": [],
+   "types": [
+    {
+     "legacy": "TCityAcc",
+     "java": "CitySum.CityAcc"
+    }
+   ],
+   "replaced": []
+  }
+ ],
+ "driver": {
+  "legacy": [
+   "LegacyEtl.pas: TMainForm.FormCreate",
+   "LegacyEtl.pas: TMainForm.ButtonRunClick"
+  ],
+  "globals": [
+   "Form",
+   "FDb",
+   "FNotes"
+  ],
+  "types": [
+   "TMainForm"
+  ],
+  "java": "etl.BatchRun",
+  "notes": [
+   "LegacyEtl.pas:24 GSkipVoid := True (BatchRun sets Common.gSkipVoid = true before Orders.runOrderAmount)",
+   "LegacyEtl.pas:39 DefaultSystemCodePage := CP_UTF8: string field values and SetCodePage(Note, CP_UTF8) are UTF-8; Java strings are Unicode, nothing to port",
+   "run order: Customer.runCustomerClean, Orders.runOrderAmount, CitySum.runCitySum"
+  ]
+ },
+ "capabilities": [
+  {
+   "capability": "db.connect",
+   "legacy": "uCommon.OpenDb",
+   "target": "Db.open(props)"
+  },
+  {
+   "capability": "db.commit",
+   "legacy": "uCommon.CloseDb (GTrans.Commit)",
+   "target": "Db.commit()"
+  },
+  {
+   "capability": "db.disconnect",
+   "legacy": "uCommon.CloseDb (GConn.Close)",
+   "target": "BatchRun.main Db.close() in finally"
+  },
+  {
+   "capability": "db.exec",
+   "legacy": "uCommon.ExecSql",
+   "target": "Db.current().execute(sql)"
+  },
+  {
+   "capability": "db.query",
+   "legacy": "uCommon.NewQuery (SELECT queries)",
+   "target": "Db.current().query(sql, params...)"
+  },
+  {
+   "capability": "db.write",
+   "legacy": "uCommon.NewQuery (INSERT with ParamByName + ExecSQL)",
+   "target": "Db.current().insertBatch(Tables.out(t), cols, rows)"
+  },
+  {
+   "capability": "config.read",
+   "legacy": "LegacyEtl.TMainForm.FormCreate ParamStr(1), ParamStr(2)",
+   "target": "jdbc.url and notes.file in etl.properties"
+  },
+  {
+   "capability": "file.read.text",
+   "legacy": "uCustomer.LoadNotes AssignFile/Reset/ReadLn",
+   "target": "java.nio bytes, MS950 decoder (REPLACE, '?')"
+  }
+ ],
+ "uncovered": []
+}

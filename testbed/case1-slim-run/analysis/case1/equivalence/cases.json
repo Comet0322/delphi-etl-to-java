@@ -1,0 +1,32 @@
+{
+  "system": "",
+  "legacy": {
+    "label": "legacy"
+  },
+  "new": {
+    "label": "new"
+  },
+  "cases": [
+    {
+      "id": "C01-T_CUST_CLEAN",
+      "input": "C01",
+      "title": "ETL-001 T_CUST_CLEAN on input C01",
+      "legacy": "legacy/C01/T_CUST_CLEAN.csv",
+      "new": "new/C01/T_CUST_CLEAN.csv"
+    },
+    {
+      "id": "C01-T_ORDER_AMT",
+      "input": "C01",
+      "title": "ETL-002 T_ORDER_AMT on input C01",
+      "legacy": "legacy/C01/T_ORDER_AMT.csv",
+      "new": "new/C01/T_ORDER_AMT.csv"
+    },
+    {
+      "id": "C01-T_CITY_SUM",
+      "input": "C01",
+      "title": "ETL-003 T_CITY_SUM on input C01",
+      "legacy": "legacy/C01/T_CITY_SUM.csv",
+      "new": "new/C01/T_CITY_SUM.csv"
+    }
+  ]
+}

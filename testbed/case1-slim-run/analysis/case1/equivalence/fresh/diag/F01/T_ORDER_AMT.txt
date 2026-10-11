@@ -1,0 +1,2 @@
+rows: legacy 7, new 7
+no differences

@@ -1,0 +1,29 @@
+
+-------------------------------------------------------
+ T E S T S
+-------------------------------------------------------
+Running etl.units.OrdersTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.206 sec - in etl.units.OrdersTest
+Running etl.units.DelphiRtlTest
+Tests run: 8, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE! - in etl.units.DelphiRtlTest
+roundIsHalfToEven(etl.units.DelphiRtlTest)  Time elapsed: 0.002 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<2> but was:<3>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at etl.units.DelphiRtlTest.roundIsHalfToEven(DelphiRtlTest.java:14)
+
+Running etl.units.CitySumTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 sec - in etl.units.CitySumTest
+
+Results :
+
+Failed tests: 
+  DelphiRtlTest.roundIsHalfToEven:14 expected:<2> but was:<3>
+
+Tests run: 16, Failures: 1, Errors: 0, Skipped: 0
+
+[[1;31mERROR[m] There are test failures.
+
+Please refer to /tmp/claude-1000/-tmp-claude-1000--mnt-a0df7f69-337a-4cb4-a10a-f48243e3ddfc-Code-CodeMigration2-ef7f9c1b-0600-4386-8caa-a102b43a32a7-scratchpad-case1-slim/b59c3c2f-0bb1-45d3-9974-d544fb213f4c/scratchpad/canary-java/target/surefire-reports for the individual test results.

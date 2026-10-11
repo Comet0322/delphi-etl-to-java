@@ -1,0 +1,2 @@
+rows: legacy 1, new 1
+no differences
