@@ -47,8 +47,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json
 - op_id: ETL-002/OP-02
   type: filter
   source_loc: legacy/src_utf8/uOrders.pas:42-47
@@ -93,8 +93,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json
 - op_id: ETL-002/OP-03
   type: transform
   source_loc: legacy/src_utf8/uOrders.pas:48-51
@@ -139,8 +139,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json
 - op_id: ETL-002/OP-04
   type: transform
   source_loc: legacy/src_utf8/uOrders.pas:12-26,55
@@ -183,8 +183,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json
 - op_id: ETL-002/OP-05
   type: transform
   source_loc: legacy/src_utf8/uOrders.pas:52
@@ -227,8 +227,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json
 - op_id: ETL-002/OP-06
   type: transform
   source_loc: legacy/src_utf8/uOrders.pas:56
@@ -271,8 +271,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json
 - op_id: ETL-002/OP-07
   type: write
   source_loc: legacy/src_utf8/uOrders.pas:35-36,53-58
@@ -315,5 +315,5 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.OrderAmountJob#run
+  evidence: results/compare/run-002.json

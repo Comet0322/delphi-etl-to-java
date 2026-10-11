@@ -48,8 +48,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#loadNotes/addNote
+  evidence: results/compare/run-001.json
 - op_id: ETL-001/OP-02
   type: read
   source_loc: legacy/src_utf8/uCustomer.pas:55
@@ -95,8 +95,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#run
+  evidence: results/compare/run-001.json
 - op_id: ETL-001/OP-03
   type: transform
   source_loc: legacy/src_utf8/uCustomer.pas:61
@@ -139,8 +139,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#run
+  evidence: results/compare/run-001.json
 - op_id: ETL-001/OP-04
   type: transform
   source_loc: legacy/src_utf8/uCustomer.pas:62
@@ -183,8 +183,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#run
+  evidence: results/compare/run-001.json
 - op_id: ETL-001/OP-05
   type: transform
   source_loc: legacy/src_utf8/uCustomer.pas:63-67
@@ -227,8 +227,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#run
+  evidence: results/compare/run-001.json
 - op_id: ETL-001/OP-06
   type: lookup
   source_loc: legacy/src_utf8/uCustomer.pas:72
@@ -272,8 +272,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#run
+  evidence: results/compare/run-001.json
 - op_id: ETL-001/OP-07
   type: write
   source_loc: legacy/src_utf8/uCustomer.pas:53-54,68-73
@@ -316,5 +316,5 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CustomerCleanJob#run
+  evidence: results/compare/run-001.json

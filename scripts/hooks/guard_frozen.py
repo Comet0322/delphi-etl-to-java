@@ -11,6 +11,7 @@ target file, or from the command's cwd) that contains `.charter.lock`.
 """
 import json
 import os
+import re
 import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
@@ -51,7 +52,13 @@ def main():
     finally:
         os.chdir(cwd)
     lock_abs = os.path.join(root, freeze.LOCK)
-    names = [os.path.basename(p) for p in frozen] + [freeze.LOCK]
+    # Full paths only (relative to the project root, as stored in the lock, or
+    # absolute). Basenames would collide with same-named copies of template files.
+    names = []
+    for p in frozen:
+        names.append(p)
+        names.append(os.path.relpath(p, root))
+    names.append(freeze.LOCK)
 
     if tool == "Bash":
         cmd = inp.get("command", "")
@@ -59,7 +66,13 @@ def main():
             print("BLOCKED: unfreeze is human-only. Stop and ask the user.", file=sys.stderr)
             return 2
         for n in names:
-            if n in cmd and any(w in cmd for w in (">", "sed ", "tee ", "mv ", "cp ", "rm ", "truncate", "perl ")):
+            e = re.escape(n)
+            targets_file = (
+                re.search(r">>?\s*['\"]?" + e, cmd)                                   # redirection into it
+                or re.search(r"\b(sed|perl)\b[^|;&\n]*\s-[A-Za-z]*i[^|;&\n]*" + e, cmd)  # in-place edit
+                or re.search(r"\b(tee|truncate|rm|mv|cp|install|dd|ln)\b[^|;&\n]*" + e, cmd)
+            )
+            if targets_file:
                 print("BLOCKED: command appears to modify frozen file %s. "
                       "Report a blocker instead of editing frozen decisions." % n, file=sys.stderr)
                 return 2

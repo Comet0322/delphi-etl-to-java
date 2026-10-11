@@ -50,8 +50,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CitySummaryJob#run
+  evidence: results/compare/run-003.json
 - op_id: ETL-003/OP-02
   type: read
   source_loc: legacy/src_utf8/uCitySum.pas:46-48
@@ -95,8 +95,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CitySummaryJob#run
+  evidence: results/compare/run-003.json
 - op_id: ETL-003/OP-03
   type: lookup
   source_loc: legacy/src_utf8/uCitySum.pas:50-51
@@ -140,8 +140,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CitySummaryJob#run
+  evidence: results/compare/run-003.json
 - op_id: ETL-003/OP-04
   type: aggregate
   source_loc: legacy/src_utf8/uCitySum.pas:44-45,52-61
@@ -185,8 +185,8 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CitySummaryJob#run
+  evidence: results/compare/run-003.json
 - op_id: ETL-003/OP-05
   type: write
   source_loc: legacy/src_utf8/uCitySum.pas:66-78
@@ -229,5 +229,5 @@ operations:
       note: ''
       loc: ''
   confidence: inferred
-  target_loc: ''
-  evidence: ''
+  target_loc: etl.jobs.CitySummaryJob#run
+  evidence: results/compare/run-003.json
