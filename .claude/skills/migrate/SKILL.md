@@ -11,7 +11,8 @@ first, resume from `stage`. Never rely on conversation memory.
 ## Inputs (ask only if missing)
 
 - `legacy.source_dir` — where the legacy source is
-- `domain_knowledge.path` — domain-knowledge skill directory (may be empty)
+- `domain_knowledge.path` — directory of the domain-knowledge skill, itself a
+  skill under `.claude/skills/` (e.g. `delphi-to-java-etl`); may be empty
 - `mode` — `interactive` (default) or `unattended`
 
 ## Stages
