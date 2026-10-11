@@ -1,6 +1,6 @@
 {
   "name": "code-modernization-delphi",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Unattended migration of small Delphi ETL systems to Java: a router dispatches analyze, audit, transform, verify and fix agents, checks each stage by script, and proves equivalence with the upstream code-modernization comparison and proof pack. Project knowledge (mapping rules, template, how to run and capture both programs) lives in a domain-knowledge skill.",
   "author": {
     "name": "Anthropic (original); Delphi specialisation by this repository"

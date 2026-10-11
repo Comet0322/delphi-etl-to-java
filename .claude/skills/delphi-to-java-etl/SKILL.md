@@ -45,9 +45,10 @@ unless stated). How each side is built, run and made to produce those files is d
 testbed: `legacy.db` with the input tables, and the Big5 notes file).
 
 **Legacy (testbed).** The Delphi source builds on Linux with Free Pascal: `fpc -Mdelphi -FU<build dir> -FE<build
-dir> <program file>`, into a build folder outside the source. The program's usage line (top of the program file)
-gives its arguments, typically the database path and the input file paths. It writes its output tables into the
-database it was given. Capture them with the migration tool's `scripts/collect_sqlite.py <db> <out> <TABLE,...>`.
+dir> <program file>` with the build folder under `{tmp}`, never inside the source. The program's usage line (top of
+the program file) gives its arguments, typically the database path and the input file paths. It writes its output
+tables into the database it was given. Capture them with `python3 {knowledge}/collect_sqlite.py <db> {out}
+<TABLE,...>` (the script next to this file).
 
 **Legacy (company).** The real Delphi programs do not run on the migration machine. Two ways to get their output,
 chosen per project:
@@ -64,8 +65,8 @@ Build: `mvn -q -o -f <project>/pom.xml package -DskipTests` (drop `-o` when the 
 dependency). Run: `"$JAVA_HOME/bin/java" -cp "<project>/target/classes:<project>/target/lib/*" etl.BatchRun
 <case>/etl.properties`, where `etl.properties` sets `jdbc.url` to the case's database, `table.suffix=_NEW`, and
 every input file path the legacy took from `ParamStr`. It writes its output to `<TABLE>_NEW` in that database;
-capture with `collect_sqlite.py <db> <out> <TABLE,...> --suffix _NEW`. Tests:
-`mvn -q -f <project>/pom.xml clean test -Dmaven.test.failure.ignore=true`.
+capture with `python3 {knowledge}/collect_sqlite.py <db> {out} <TABLE,...> --suffix _NEW`. Tests:
+`mvn -q -o -f <project>/pom.xml test` (its exit code is the result).
 
 ## Not covered here (ask; unattended defaults in brackets)
 

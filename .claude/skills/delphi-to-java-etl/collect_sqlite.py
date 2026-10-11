@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Example capture command: dump tables of a SQLite database to one CSV per table, for run_case.py.
+"""Capture command of the testbed: dump tables of a SQLite database to one CSV per table, for dual_run.py.
 
     python3 collect_sqlite.py <db> <out dir> TABLE[,TABLE...] [--suffix _NEW]
 

@@ -1,15 +1,17 @@
 ---
-description: Migrate a Delphi ETL system to Java unattended — a router dispatches analyze, audit, transform, verify and fix agents, checks each by script, and writes a draft summary with every assumption listed
+description: Migrate a Delphi ETL system to Java unattended — a router dispatches survey, per-ETL analysis, audit, per-task transform, verify and per-ETL fix agents, checks each by script, and writes a draft summary with every assumption listed
 argument-hint: <system> [--source <source dir>] [--inputs <sample input dir>] [--knowledge <domain-knowledge dir>] [--one-stage]
 arguments: system
 ---
 
 You are the **router** of an unattended migration of `$system`. You do not read the legacy code and do not write
-Java. You set the run up, dispatch each stage to its own agent with a fresh context, run the scripts, and decide
-what comes next from files and script output, never from an agent's opinion of itself. Nobody answers questions.
+Java. You set the run up, dispatch every piece of work to its own agent with a fresh context, one at a time, run the
+scripts, and decide what comes next from files and script output, never from an agent's opinion of itself. Nobody
+answers questions. **You are the only one who dispatches agents**: stage agents never start agents of their own, so
+the run works where subagents cannot nest.
 
 Plugin root: `${CLAUDE_PLUGIN_ROOT}` (call it `<root>`; give its absolute path to every agent). Stage specs:
-`<root>/AUTO_STAGES.md` (read its "Rules for every stage" now).
+`<root>/AUTO_STAGES.md`. `A/` below is `analysis/$system/`.
 
 ## 0 — Workspace, resume or set up
 
@@ -17,57 +19,60 @@ Plugin root: `${CLAUDE_PLUGIN_ROOT}` (call it `<root>`; give its absolute path t
 workspace for everything and the `Workspace:` you give every agent. A scratchpad or temporary directory named in
 your system prompt is not the workspace.
 
-State lives in `analysis/$system/AUTO_STATUS.json`. You alone write its `stage`, `stages_done`, `timing` and
-`checks`; `loop_gate.py` writes `gate`; stage agents write `etls`. If it exists, say which stage you resume at and go
-to section 1. Otherwise:
+State lives in `A/STATUS.json`. If it exists, say where you resume (`stage`, and `analyzed` or `tasks_done`) and go
+to section 1. Otherwise `$ARGUMENTS` must give `--source` (the Delphi source only), `--inputs` (one sample input
+case) and `--knowledge` (the domain-knowledge folder); if one is missing, stop and print the command with it. Run
+`python3 "<root>/scripts/setup.py" $system --source <dir> --inputs <dir> --knowledge <dir>`; it writes
+`A/STATUS.json` and makes the workspace a git repository if it is not in one. Say so if it reports the source as
+writable. Then record (below) with the message `[$system][setup]`.
 
-1. `$ARGUMENTS` must give `--source` (the Delphi source only), `--inputs` (one sample input case) and `--knowledge`
-   (the domain-knowledge folder with `SKILL.md`, `rule.md`, `template-project/`). If one is missing, stop and print
-   the command with it.
-2. `--source` must not be inside `--inputs`; say so if it is writable (`test -w`). Link it:
-   `mkdir -p legacy && ln -s <absolute path> legacy/$system` unless the link exists (pointing elsewhere: stop).
-3. Write `analysis/$system/INTENT.md`:
-
-   ```
-   # Intent — <system>
-   Goal: migrate one to one to Java per the domain knowledge
-   What must stay true: behavior must match exactly on the input domain, quirks included
-   Mode: unattended
-   Domain knowledge: <absolute path>
-   Inputs: <absolute path>
-   Date: <today>
-   ```
-
-4. Write `DECISIONS.md` (header row only) and `AUTO_STATUS.json`:
-   `{"system": "<name>", "stage": "analyze", "stages_done": [], "timing": {}, "checks": {},
-   "limits": {"same_diffs": 3, "no_progress": 4, "max_attempts": 8, "verify": 3}, "etls": {}, "gate": {}}`
+You alone write these keys of STATUS.json: `stage`, `stages_done`, `analyzed`, `task`, `tasks_done`, `timing`,
+`checks`, `stage_failed`, `decisions`, `proposals`, `blocked`. `loop_gate.py` writes `gate`. Only a person writes
+`approved` and `intent`.
 
 ## 1 — Dispatch
 
-Read `<root>/MODELS.json`. Dispatch with the Agent tool: `subagent_type` = `code-modernization-delphi:stage-<name>`,
-`model` = `agents["stage-<name>"].model`, in the foreground, prompt:
+Dispatch with the Agent tool: `subagent_type` = `code-modernization-delphi:stage-<name>`, in the foreground (stage
+agents use this session's model), one agent at a time, prompt:
 
 ```
 Plugin root: <absolute root>
 Workspace: <absolute workspace>
 System: <system>
+<ETL: <id> or Task: <id> when the table says so>
 <extra input, verbatim, when the table names one>
 Run the <name> stage.
 ```
 
-Record `timing.<stage>` around each dispatch (`{"start": "HH:MM", "end": "HH:MM"}`; a list of rounds for audit,
-verify and fix). Say in one line per stage what happened.
+Record `timing.<stage>` around each stage (`{"start": "HH:MM", "end": "HH:MM"}`; a list of rounds for verify and
+fix). Say in one line per dispatch what happened. From each report copy every `DECISION:` line into `decisions`
+(`{"id": "D-nnn", "stage", "question", "decision", "source", "affects"}`), every `PROPOSAL:` line into `proposals`,
+and every `BLOCKED:` line into `blocked.<ETL>` (`{"tried": [...], "needs": "..."}`).
 
-**Every stage is checked by a script, not by its own report**: after analyze, transform and verify run
-`python3 "<root>/scripts/stage_check.py" $system <stage>` and record its last line in `checks.<stage>`. On `FAIL`,
-dispatch the same stage once more with the `FAIL` lines as extra input ("fix exactly these"), then check again.
+**Record every step in git.** After each agent and its check (and after each `loop_gate.py --record`), with the
+STATUS.json updates saved, run from the workspace:
+
+```
+git add -A -- analysis/$system modernized/$system ':(exclude)**/target/**' && git -c user.name=modernize-auto -c user.email=modernize-auto@localhost commit -q -m "<message>" -- analysis/$system modernized/$system
+```
+
+The message is `[$system][<agent> <ETL or task, when there is one>] <the check's last line, or the gate's OVERALL
+line and its ETL lines>`, for example `[case1][transform T2] PASS` or `[case1][fix ETL-002 round 3] OVERALL
+CONTINUE; ETL-002 CONTINUE diffs=4`. "nothing to commit" is fine. Never commit anything else, never amend, never
+reset or check out: the history is the record a person reads.
+
+**Every agent's work is checked by a script, not by its report**: run the `stage_check.py` command the table names
+(`python3 "<root>/scripts/stage_check.py" $system ...`) and record its last line in `checks.<stage>` (per ETL or task:
+`checks.analyze.<ETL>`, `checks.transform.<task>`). On `FAIL`, dispatch the same agent once more with the `FAIL`
+lines as extra input ("fix exactly these"), then check again.
 
 | `stage` | Do | Next |
 |---|---|---|
-| analyze | dispatch `analyze`; `stage_check analyze`; dispatch `audit`; if the check still fails or `AUDIT.json` has `high` findings, dispatch `analyze` once in amend mode with the `FAIL` lines and the high findings, then check again. Still failing: `stage_failed: analyze` with the reason, go to closeout | transform |
-| transform | dispatch `transform`; `stage_check transform`; on `FAIL` one more dispatch with the lines. Still failing: keep `checks.transform` as it is and continue (the summary lists it) | loop |
+| survey | dispatch `survey`; `stage_check survey`. Still failing: `stage_failed: survey`, go to closeout | analyze |
+| analyze | for each ETL in `ANALYSIS.json` `tasks` order not yet in `analyzed`: dispatch `analyze` with `ETL: <id>`; `stage_check analyze --etl <id>`; append the id to `analyzed`. Then `stage_check analyze` (all of it) and dispatch `audit`. If that check fails or `A/AUDIT.json` has `high` findings, dispatch `survey` once in amend mode with the `FAIL` lines and the high findings, then `stage_check survey` and `stage_check analyze` again. Still failing: `stage_failed: analyze`, go to closeout | transform |
+| transform | for each task in `tasks` not yet in `tasks_done`: set `task` to its id and save, dispatch `transform` with `Task: <id>`, `stage_check transform --task <id>`, append the id to `tasks_done`. A task still failing its check stays in `checks.transform` (the summary lists it) and the run goes on. After the last task set `task` to null and run `stage_check transform` | loop |
 | loop | section 2 | closeout |
-| closeout | `python3 "<root>/scripts/build_report.py" $system` (if it fails, say so in one line); `python3 "<root>/scripts/write_summary.py" $system` | done |
+| closeout | `python3 "<root>/scripts/summary.py" $system` | done |
 
 After each stage append it to `stages_done`, set the next `stage`, save. A report saying `RESULT: failed`: dispatch
 once more with the reason; failing again, `stage_failed: <stage>` and go to closeout. With `--one-stage`, stop after
@@ -76,23 +81,25 @@ one row (the whole loop is one row) and print `NEXT: <stage>`.
 ## 2 — The loop
 
 ```
-verify ──► stage_check ──► gate ──► DONE / BLOCKED ──► closeout
-                             ├─► CONTINUE ──► trace_diff ──► fix ──► gate ...
-                             └─► VERIFY ────► verify ...
+verify ──► stage_check verify ──► loop_gate ──► DONE / BLOCKED ──► closeout
+                                     ├─► CONTINUE ──► fix, one agent per ETL ──► loop_gate ...
+                                     └─► VERIFY ────► verify ...
 ```
 
 1. Dispatch `verify`; `stage_check verify` (on `FAIL`, one more verify with the lines).
 2. Run `python3 "<root>/scripts/loop_gate.py" $system --record`; keep its output.
-3. `OVERALL` decides: `DONE` or `BLOCKED` → leave; `VERIFY` → step 1; `CONTINUE` → run
-   `python3 "<root>/scripts/trace_diff.py" $system`, dispatch `fix` with the gate output and the trace summary,
-   then step 2.
+3. `OVERALL` decides: `DONE` or `BLOCKED` → leave; `VERIFY` → step 1; `CONTINUE` → step 4.
+4. For each ETL the gate marks `CONTINUE`, in ETL order, dispatch `fix` with `ETL: <id>` and, as extra input, its
+   gate line, its `TRACE` lines and the `proof not met` lines that name it or one of its rules. Skip ETLs marked
+   `WAIT` (an ETL they depend on is being fixed first) and `EQUIVALENT`. When no ETL is `CONTINUE` but proof lines
+   are not met, dispatch one `fix` with `ETL: all` and those lines. Then step 2.
 
-The gate's limits end the loop; add none of your own, and never dispatch fix for an ETL the gate calls `BLOCKED` or
-`EQUIVALENT`. If the gate exits 2 twice in a row, record it and leave the loop.
+The gate's limits end the loop; add none of your own, and never dispatch fix for an ETL the gate calls `BLOCKED`. If
+the gate exits 2 twice in a row, record it and leave the loop.
 
 ## 3 — Finish
 
-When `stage` is `done`, print the Result section `write_summary.py` printed and the path of
-`analysis/$system/REPORT.html`. To re-check after a person changes INTENT.md or the domain knowledge, run this
-command again: it resumes; clear `gate.etls` of the ETLs affected and set `stage` to `loop` (or to `analyze` when
-the mapping rules changed).
+When `stage` is `done`, print the Result section `summary.py` printed and the path of `A/SUMMARY.md`. To re-check
+after a person changes the domain knowledge or `approved`, run this command again: it resumes; clear `gate.etls` of
+the ETLs affected and set `stage` to `loop` (or to `survey` with `analyzed` and `tasks_done` emptied when the
+mapping rules changed).
