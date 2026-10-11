@@ -128,7 +128,7 @@ class Fixture(unittest.TestCase):
                 "uncovered": []},
             "inventory": {"ETL-001": [{"op_id": "OP-01", "source_loc": "uOrders.pas:20-23", "does": "write total",
                                        "writes": ["T_OUT.TOTAL"], "reads": []}]},
-            "rules": [{"id": "RULE-001", "name": "total", "etl": "ETL-001", "priority": "P0", "source": "uOrders.pas:20-21, 23"}],
+            "logic": [{"id": "BL-001", "name": "total", "etl": "ETL-001", "level": "core", "source": "uOrders.pas:20-21, 23"}],
             "tasks": [{"id": "T0", "units": ["uCommon"], "etls": []},
                       {"id": "T1", "units": ["uOrders"], "etls": ["ETL-001"]}]}
         self.save()
@@ -143,7 +143,7 @@ class Fixture(unittest.TestCase):
                    "  Db.current().execute(\"INSERT INTO \" + Tables.out(\"T_OUT\") + \" VALUES (1)\");\n }\n}\n")
         self.write(os.path.join(main, "units", "Common.java"), "class Common {}\n")
         self.write(os.path.join(self.java, "src", "test", "java", "etl", "OrdersTest.java"),
-                   "class OrdersTest { @Test public void rule001_total() {} }\n")
+                   "class OrdersTest { @Test public void bl001_total() {} }\n")
 
     def write(self, path, text):
         os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -218,11 +218,11 @@ class Analyze(Fixture):
     def test_bad_inventory_and_rules(self):
         self.analysis["inventory"]["ETL-001"] = [{"op_id": "OP-01", "source_loc": "uOrders.pas:900", "does": "x",
                                                   "writes": ["T_IN.X"]}]
-        self.analysis["rules"] = [{"id": "R1", "priority": "P1", "source": "nope.pas:1"}]
+        self.analysis["logic"] = [{"id": "R1", "level": "P1", "source": "nope.pas:1"}]
         self.save()
         rc, out = self.check("analyze")
-        for text in ("the file has", "needs a reads list", "writes T_IN.X, not an output table", "no P0 rule",
-                     "is not RULE-nnn", "cites nope.pas"):
+        for text in ("the file has", "needs a reads list", "writes T_IN.X, not an output table", "no core logic item",
+                     "is not BL-nnn", "is not core or general", "cites nope.pas"):
             self.assertIn(text, out)
 
 
@@ -353,7 +353,7 @@ class Loop(Fixture):
         os.remove(os.path.join(self.java, "src", "test", "java", "etl", "OrdersTest.java"))
         rc, out = self.gate("--record")
         self.assertIn("proof not met: tests pass: exit 1", out)
-        self.assertIn("no test names RULE-001", out)
+        self.assertIn("no test names BL-001", out)
         self.assertIn("OVERALL CONTINUE", out)
         with open(os.path.join(self.src, "uOrders.pas"), "a") as fh:
             fh.write("\n")

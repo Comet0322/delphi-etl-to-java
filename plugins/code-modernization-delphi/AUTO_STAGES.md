@@ -74,8 +74,10 @@ Writes `A/ANALYSIS.json` and `A/RUN.json`.
      whole row, DROP or CREATE; empty lists when none); the gate traces differences to ops through `writes`.
      `implicit` lists what a naive translation loses (anything rule.md §4–§6 covers that this op relies on).
      `capability` when the op is infrastructure.
-   - `rules`: one per business decision, `RULE-nnn`, with the exact semantics in `text`. P0 = the central
-     calculation of an ETL, or a value whose error is costly (money, keys, what gets skipped).
+   - `logic`: the business logic, one item per business decision the program makes, `BL-nnn`, with its legacy
+     `source` and the exact semantics in `text`. `level` is `core` for the central calculation of an ETL or a value
+     whose error is costly (money, keys, what gets skipped), else `general`. Every core item gets a test. Ops name
+     the items they implement in `logic`.
 3. **`A/RUN.json`** from SKILL.md's "Running both programs and capturing their output", with this system's values
    (schema at the top of `<root>/scripts/dual_run.py`): `legacy` and `new` with `build`, `run`, `capture` (and
    `recorded: true` when SKILL.md says the legacy output is recorded); `new.test` = the test command; `env` and
@@ -98,8 +100,8 @@ Check the analysis against the source as a referee who tries to refute it. Read 
 `A/ANALYSIS.json` and rule.md. Look for: a statement that reads, computes, filters, skips, orders or writes data
 and is in no op; an ETL the driver runs that is missing; a `source_loc` that does not contain what `does` says; ops
 out of legacy order; a rule.md §4–§6 behavior an op relies on that its `implicit` does not name; wrong
-`writes`/`reads`; infrastructure translated as business code or the reverse (rule.md §2); a P0 rule whose `source`
-does not implement it, or an ETL's central calculation without a P0 rule. Cite `file:line` for every finding:
+`writes`/`reads`; infrastructure translated as business code or the reverse (rule.md §2); a logic item whose
+`source` does not implement it, or an ETL's central calculation without a `core` logic item. Cite `file:line` for every finding:
 
 ```json
 {"findings": [{"severity": "high", "where": "uOrders.pas:44", "issue": "...", "fix": "..."}]}
@@ -120,8 +122,8 @@ agent: the one in the prompt.
    routines left out; RTL calls per rule.md §5. Change an earlier task's class only to add what this task needs.
 3. Extend the entry point with the driver lines up to and including the last ETL of this task, in the driver's
    order (rule.md §1, SKILL.md): after task Tn it runs the driver up to there.
-4. Tests (SKILL.md shows the pattern): one or more for each P0 rule of this task's ETLs, method names starting with
-   the rule id (`rule002_discountRoundsHalfEven`), plus cheap checks of `implicit` behaviors. Expected values come
+4. Tests (SKILL.md shows the pattern): one or more for each core logic item of this task's ETLs, method names
+   starting with its id (`bl002_discountRoundsHalfEven`), plus cheap checks of `implicit` behaviors. Expected values come
    from the legacy output of C01 (`A/RESULTS.json`) or from rule.md, never from the Java.
 5. Run `dual_run.py`: it compares the tables of the ETLs built so far (the rest show as `pending`). Read what it
    prints, fix, repeat until those tables are the same and the tests pass (at most 5 rounds, then leave it to the
@@ -159,11 +161,11 @@ The router's prompt gives you this ETL's gate line, its `TRACE` lines and the `p
 2. Read this ETL's differences in `A/RESULTS.json` for details. Group them by cause. Compare the legacy lines with
    the Java lines; find what the legacy does that the Java does not, by reading the legacy, never by fitting the
    Java to the numbers.
-3. Fix one cause at a time; if rule.md does not cover it, a `PROPOSAL:` line and a test named after the rule it
+3. Fix one cause at a time; if rule.md does not cover it, a `PROPOSAL:` line and a test named after the logic item it
    belongs to. Change shared classes only where this ETL's cause lies; the next `dual_run.py` shows whether another
    ETL broke.
 4. Run `dual_run.py` again.
-5. A `proof not met` line that is not a difference (a failing test, a P0 rule no test names, a table always empty)
+5. A `proof not met` line that is not a difference (a failing test, a core logic item no test names, a table always empty)
    is fixed in the tests or the code. Never delete a test to pass.
 
 **A difference you cannot explain from the legacy source is not fixed by making the Java match the numbers.** Leave

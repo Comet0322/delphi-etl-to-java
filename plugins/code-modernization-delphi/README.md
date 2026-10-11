@@ -58,7 +58,7 @@ Every agent writes at most two files under `analysis/<system>/` (`A/`):
 | Agent | Writes |
 |---|---|
 | router (`setup.py`, its own bookkeeping) | `A/STATUS.json` — intent (mode `unattended`, or `ask` with `--ask`), stage, questions, current task, tasks done, timing, checks, decisions, proposals, blocked, gate; a person's `approved` |
-| analyze | `A/ANALYSIS.json` (ETLs, tasks, mapping, inventory, rules), `A/RUN.json` (how each side is built, run, captured) |
+| analyze | `A/ANALYSIS.json` (ETLs, tasks, mapping, inventory, business logic), `A/RUN.json` (how each side is built, run, captured) |
 | audit | `A/AUDIT.json` |
 | transform (one per task) | the Java project `modernized/<system>/java/`, `A/RESULTS.json` (by `dual_run.py`) |
 | verify | `A/fresh_inputs.py`, `A/RESULTS.json` (by `dual_run.py`) |
@@ -79,5 +79,5 @@ Tests: `python3 -m unittest discover -s scripts/tests`.
 
 ## What a person decides
 
-The run is a draft. A person reviews the assumed decisions and the P0 rules, accepts or rejects each remaining
+The run is a draft. A person reviews the assumed decisions and the core business logic, accepts or rejects each remaining
 difference (STATUS.json `approved`), and merges the knowledge proposals into the skill (all listed in SUMMARY.md). The run never does any of these.

@@ -68,7 +68,7 @@ def summary(p):
     out += ["", "## For a person to do", "",
             "1. Review the assumed decisions, above all where the input domain was drawn; correct the domain "
             "knowledge where one is wrong and run modernize-auto again.",
-            "2. Review the P0 rules in ANALYSIS.json.",
+            "2. Review the core business logic (ANALYSIS.json `logic`, level `core`).",
             "3. Accept or reject each remaining difference (STATUS.json `approved`: {\"C01-<TABLE>\": \"why\"}). "
             "This run never does.",
             "4. Merge the knowledge proposals into rule.md.",

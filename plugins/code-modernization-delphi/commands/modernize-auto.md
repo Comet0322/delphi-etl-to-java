@@ -102,7 +102,7 @@ verify ──► stage_check verify ──► loop_gate ──► DONE / BLOCKED
 2. Run `python3 "<root>/scripts/loop_gate.py" $system --record`; keep its output.
 3. `OVERALL` decides: `DONE` or `BLOCKED` → leave; `VERIFY` → step 1; `CONTINUE` → step 4.
 4. For each ETL the gate marks `CONTINUE`, in ETL order, dispatch `fix` with `ETL: <id>` and, as extra input, its
-   gate line, its `TRACE` lines and the `proof not met` lines that name it or one of its rules. Skip ETLs marked
+   gate line, its `TRACE` lines and the `proof not met` lines that name it or one of its logic items. Skip ETLs marked
    `WAIT` (an ETL they depend on is being fixed first) and `EQUIVALENT`. When no ETL is `CONTINUE` but proof lines
    are not met, dispatch one `fix` with `ETL: all` and those lines. Then step 2.
 

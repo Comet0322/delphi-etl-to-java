@@ -14,7 +14,7 @@ analyze    ANALYSIS.json and RUN.json parse; RUN.json has a way to run or captur
            every Pascal file in exactly one task's units unless it is a driver file (named in mapping.driver.legacy);
            every routine, unit-level global and type the Pascal source declares
            is named in mapping; every ETL has outputs with names; every inventory op has op_id, does, a source_loc
-           pointing at real lines, writes/reads lists naming only output tables for writes; there is a P0 rule
+           pointing at real lines, writes/reads lists naming only output tables for writes; there is a core logic item
            whose source points at real lines.
 transform  (--task: only the units and ETLs of the tasks up to that one) every mapped routine is a static method, every global a static field, every type a nested class or enum
            of its mapped class; replaced routines have no method; every op has its `// ETL-xxx/OP-nn` comment; each
@@ -37,8 +37,8 @@ ANALYSIS.json (written by the analyze agent; values are examples):
                  "uncovered": []},
      "inventory": {"ETL-001": [{"op_id": "OP-01", "source_loc": "uOrders.pas:35-36", "does": "...",
                                 "writes": ["T_ORDER_AMT.AMOUNT"], "reads": ["ORDERS.QTY"], "capability": "db.query",
-                                "implicit": ["..."], "rules": ["RULE-001"]}]},
-     "rules": [{"id": "RULE-001", "name": "...", "etl": "ETL-001", "priority": "P0", "confidence": "High",
+                                "implicit": ["..."], "logic": ["BL-001"]}]},
+     "logic": [{"id": "BL-001", "name": "...", "etl": "ETL-001", "level": "core", "confidence": "High",
                 "source": "uOrders.pas:31-38", "text": "<one sentence with the exact semantics>"}],
      "tasks": [{"id": "T0", "units": ["uCommon"], "etls": []},
                {"id": "T1", "units": ["uCustomer"], "etls": ["ETL-001"]}]}
@@ -379,12 +379,14 @@ def check_analyze(p, fails):
             for w in op.get("writes") or []:
                 if str(w).split(".")[0].upper() not in outs:
                     fails.append(("inventory", "%s writes %s, not an output table" % (oid, w)))
-    rules = analysis.get("rules") or []
-    if not any(r.get("priority") == "P0" for r in rules):
-        fails.append(("rules", "no P0 rule"))
-    for r in rules:
-        if not re.match(r"^RULE-\d+$", str(r.get("id", ""))):
-            fails.append(("rules", "rule id %r is not RULE-nnn" % r.get("id")))
+    logic = analysis.get("logic") or []
+    if not any(r.get("level") == "core" for r in logic):
+        fails.append(("logic", "no core logic item"))
+    for r in logic:
+        if not re.match(r"^BL-\d+$", str(r.get("id", ""))):
+            fails.append(("logic", "logic id %r is not BL-nnn" % r.get("id")))
+        if r.get("level") not in ("core", "general"):
+            fails.append(("logic", "%s level %r is not core or general" % (r.get("id"), r.get("level"))))
         check_loc(r.get("source"), line_counts, str(r.get("id")), fails)
 
 

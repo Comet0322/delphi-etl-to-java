@@ -17,8 +17,8 @@ and an OVERALL line:
   OVERALL DONE       every ETL EQUIVALENT and the proof PROVEN (PARTLY PROVEN when the legacy output is recorded)
   OVERALL BLOCKED    nothing left the loop may do
 
-Proof checks: the tests passed (RUN.json new.test, run by dual_run.py); every P0 rule id is named in a test source
-(RULE-002 as rule002 or RULE-002); every table is the same in every case; at least 10 fresh cases covering the edge
+Proof checks: the tests passed (RUN.json new.test, run by dual_run.py); every core business-logic item is named in a test
+source (BL-002 as bl002 or BL-002); every table is the same in every case; at least 10 fresh cases covering the edge
 categories (stage_check.py verify); every output table has rows in at least one case (an empty comparison proves
 nothing); the legacy source is unchanged since init. Verdict PROVEN when all hold, PARTLY PROVEN when all hold but
 the legacy output is recorded, else NOT PROVEN.
@@ -132,13 +132,13 @@ def proof(p, analysis, results, run, status, states):
     check_(tests.get("exit") == 0, "tests pass", "exit %s; %s" % (tests.get("exit"), " / ".join(shown)[:400]))
     test_text = "\n".join(check.read(f) for f in check.java_sources(p["java"], "test"))
     untested = []
-    for r in analysis.get("rules") or []:
-        if r.get("priority") != "P0":
+    for r in analysis.get("logic") or []:
+        if r.get("level") != "core":
             continue
         num = str(r.get("id", "")).split("-")[-1]
-        if not re.search(r"(?i)\brule[-_]?%s(?!\d)" % re.escape(num), test_text):
+        if not re.search(r"(?i)\bbl[-_]?%s(?!\d)" % re.escape(num), test_text):
             untested.append(r.get("id"))
-    check_(not untested, "every P0 rule has a test", "no test names %s" % ", ".join(map(str, untested)))
+    check_(not untested, "every core logic item has a test", "no test names %s" % ", ".join(map(str, untested)))
     differing = [e for e, s in states.items() if s != "EQUIVALENT"]
     check_(not differing, "every table is the same in every case", "%s not equivalent" % ", ".join(differing))
     fails = []

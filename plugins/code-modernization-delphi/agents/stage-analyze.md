@@ -1,6 +1,6 @@
 ---
 name: stage-analyze
-description: "Runs the analyze stage of modernize-auto: ETL list, transform tasks, mapping, operation inventories, rules and RUN.json (proved with a probe that builds the template) in one pass over the Delphi source. Invoked by the modernize-auto router; not for direct use."
+description: "Runs the analyze stage of modernize-auto: ETL list, transform tasks, mapping, operation inventories, business logic and RUN.json (proved with a probe that builds the template) in one pass over the Delphi source. Invoked by the modernize-auto router; not for direct use."
 ---
 
 You run the **analyze** stage of an unattended Delphi-to-Java migration, and nothing else.
